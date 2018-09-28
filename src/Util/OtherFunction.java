@@ -23,7 +23,6 @@ public class OtherFunction {
 				Vector vector = new Vector();
 				for (int i = 0; i < jTable1.getColumnCount(); i++) {
 					vector.add(resultSet.getString(i+1));
-					System.out.println(resultSet.getString(i+1));
 				}
 				defaultTableModel.addRow(vector);
 				count++;

@@ -74,7 +74,11 @@ public class DeptManage extends JFrame implements Frame {
                 //修改部门
                 String sqlLanguage = "UPDATE Departments SET deptNO = ?,deptTitle = ?,deptManager = ?, deptTelephone = ? ,deptAddress = ? where deptNO = ?";
                 String[] psString = new String[6];
-                System.arraycopy(getStrings(), 0, psString, 0, 5);
+                String[] ps = getStrings();
+                if (ps==null){
+                    return;
+                }
+                System.arraycopy(ps, 0, psString, 0, 5);
                 psString[5]=oldName;
                 if (psString[0].equals("")) {
                     return;

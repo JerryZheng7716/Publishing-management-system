@@ -1,12 +1,18 @@
 package Frame;
 
+import Util.DateCombobox;
 import Util.OtherFunction;
+import Util.SHA1;
 import Util.SqlFunction;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.Objects;
 
@@ -20,8 +26,6 @@ public class EmployeeManage extends JFrame implements Frame{
     private JTextField textField2;
     private JTextField textField3;
     private JTextField textField4;
-    private JTextField textField5;
-    private JTextField textField6;
     private JTextField textField7;
     private JTextField textField8;
     private JTextField textField9;
@@ -29,9 +33,71 @@ public class EmployeeManage extends JFrame implements Frame{
     private JTextField textField11;
     private JTextField textField12;
     private JComboBox comboBox1;
+    private JComboBox comboBox2;
+    private JComboBox comboBox3;
+    private JComboBox comboBox4;
+    private JComboBox comboBox5;
+    private JComboBox comboBox6;
     private OtherFunction otherFunction = new OtherFunction();
     private SqlFunction sqlFunction = new SqlFunction();
     private String oldName = "防止重名没有作用DEFE32";
+    private DateCombobox dateComboboxBirthday = new DateCombobox(comboBox2,comboBox3,null);
+    private DateCombobox dateComboboxEntrytime = new DateCombobox(comboBox4,comboBox5,comboBox6);
+
+    public EmployeeManage() {
+        table1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int index = table1.getSelectedRow();
+                textField1.setText((String) table1.getValueAt(index, 0));
+                textField2.setText("");
+                textField3.setText((String) table1.getValueAt(index, 1));
+                if (table1.getValueAt(index, 2).equals("1")){
+                    textField4.setText("男");
+                }else{
+                    textField4.setText("女");
+                }
+                String[] timeStrings = ((String) table1.getValueAt(index, 3))
+                        .split("-");
+                timeStrings[1] = (Integer.parseInt(timeStrings[1])) + "";//转换成int 再转 String 把前面的0去掉
+                timeStrings[2] = (Integer.parseInt(timeStrings[2])) + "";//转换成int 再转 String 把前面的0去掉
+                otherFunction.setComboboxSelect(comboBox2, timeStrings[0]);
+                otherFunction.setComboboxSelect(comboBox3, timeStrings[1]);
+
+                timeStrings = ((String) table1.getValueAt(index, 4))
+                        .split("-");
+                timeStrings[1] = (Integer.parseInt(timeStrings[1])) + "";//转换成int 再转 String 把前面的0去掉
+                timeStrings[2] = (Integer.parseInt(timeStrings[2])) + "";//转换成int 再转 String 把前面的0去掉
+                otherFunction.setComboboxSelect(comboBox4, timeStrings[0]);
+                otherFunction.setComboboxSelect(comboBox5, timeStrings[1]);
+                otherFunction.setComboboxSelect(comboBox6, timeStrings[2]);
+
+                textField7.setText((String) table1.getValueAt(index, 5));
+                textField8.setText((String) table1.getValueAt(index, 6));
+                textField9.setText((String) table1.getValueAt(index, 7));
+                textField10.setText((String) table1.getValueAt(index, 8));
+                textField11.setText((String) table1.getValueAt(index, 9));
+                textField12.setText((String) table1.getValueAt(index, 10));
+                otherFunction.setComboboxSelect(comboBox1, (String) table1.getValueAt(index, 11));
+                changeButton.setEnabled(true);
+                oldName = textField1.getText();
+                super.mousePressed(e);
+            }
+        });
+        comboBox5.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                dateComboboxEntrytime.initDayCombobox();
+            }
+        });
+        comboBox4.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                dateComboboxEntrytime.initDayCombobox();
+            }
+        });
+    }
+
     @Override
     public void showFrame() {
         this.setContentPane(this.panel1);
@@ -52,14 +118,19 @@ public class EmployeeManage extends JFrame implements Frame{
         textField2.setText("");
         textField3.setText("");
         textField4.setText("");
-        textField5.setText("");
-        textField6.setText("");
+        dateComboboxBirthday.initYearCombobox();
+        dateComboboxBirthday.initMonthCombobox();
+        dateComboboxEntrytime.initMonthCombobox();
+        dateComboboxEntrytime.initYearCombobox();
+        dateComboboxEntrytime.initDayCombobox();
         textField7.setText("");
         textField8.setText("");
         textField9.setText("");
         textField10.setText("");
         textField11.setText("");
         textField12.setText("");
+        String sql="SELECT deptNo FROM Departments";
+        otherFunction.setComboBoxItem(sql,comboBox1);
     }
 
     @Override
@@ -79,11 +150,11 @@ public class EmployeeManage extends JFrame implements Frame{
     public String[] getStrings() {
         String empNo, empName, empSex, empBirthday, empEntrytime, empProvince, lempCity, empempZip, empAdress, empTelephone, empEmail, deptNo, empPwd;
         empNo = textField1.getText();
-        empPwd = textField12.getText();
+        empPwd = SHA1.encode(textField12.getText());
         empName = textField3.getText();
         empSex = textField4.getText();
-        empBirthday = textField5.getText();
-        empEntrytime = textField6.getText();
+        empBirthday = comboBox2.getSelectedItem().toString()+"-"+comboBox3.getSelectedItem().toString()+"-"+"01";
+        empEntrytime = comboBox4.getSelectedItem().toString()+"-"+comboBox5.getSelectedItem().toString()+"-"+comboBox6.getSelectedItem().toString();
         empProvince = textField7.getText();
         lempCity = textField8.getText();
         empempZip = textField9.getText();
@@ -128,7 +199,4 @@ public class EmployeeManage extends JFrame implements Frame{
         return new String[]{empNo, empName, empSex, empBirthday, empEntrytime, empProvince, lempCity, empempZip, empAdress, empTelephone, empEmail, deptNo, empPwd};
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
 }
