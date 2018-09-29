@@ -1,9 +1,6 @@
 package Frame;
 
-import Util.DateCombobox;
-import Util.OtherFunction;
-import Util.SHA1;
-import Util.SqlFunction;
+import Util.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -13,6 +10,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
@@ -43,6 +41,7 @@ public class EmployeeManage extends JFrame implements Frame{
     private String oldName = "防止重名没有作用DEFE32";
     private DateCombobox dateComboboxBirthday = new DateCombobox(comboBox2,comboBox3,null);
     private DateCombobox dateComboboxEntrytime = new DateCombobox(comboBox4,comboBox5,comboBox6);
+    private NoName noNameDept;
 
     public EmployeeManage() {
         table1.addMouseListener(new MouseAdapter() {
@@ -78,8 +77,9 @@ public class EmployeeManage extends JFrame implements Frame{
                 textField10.setText((String) table1.getValueAt(index, 8));
                 textField11.setText((String) table1.getValueAt(index, 9));
                 textField12.setText((String) table1.getValueAt(index, 10));
-                otherFunction.setComboboxSelect(comboBox1, (String) table1.getValueAt(index, 11));
+                otherFunction.setComboboxSelect(comboBox1, noNameDept.getName((String) table1.getValueAt(index, 11)));
                 changeButton.setEnabled(true);
+                delButton.setEnabled(true);
                 oldName = textField1.getText();
                 super.mousePressed(e);
             }
@@ -96,6 +96,77 @@ public class EmployeeManage extends JFrame implements Frame{
                 dateComboboxEntrytime.initDayCombobox();
             }
         });
+        addButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                //添加人员
+                oldName = "防止重名没有作用DEFE32";
+                String sqlLanguage = "INSERT Employee VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                String[] psString = getStrings();
+                if (psString == null) {
+                    return;
+                }
+                int x = sqlFunction.doSqlUpdate(sqlLanguage, psString);
+                if (x > 0) {
+                    JOptionPane.showMessageDialog(null, "插入成功");
+                    initTable();
+                    delButton.setEnabled(false);
+                    changeButton.setEnabled(false);
+                }
+                super.mouseClicked(e);
+            }
+        });
+        changeButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                //修改人员
+                String sqlLanguage = "UPDATE Employee SET empNo=?, empName=?, empSex=?, empBirthday=?, empEntrytime=?, empProvince=?, empCity=?, " +
+                        "empempZip=?, empAdress=?, empTelephone=?, empEmail=?, deptNo=?, empPwd=? where empNo = ?";
+                String[] psString = new String[14];
+                String[] ps = getStrings();
+                if (ps==null){
+                    return;
+                }
+                System.arraycopy(ps, 0, psString, 0, 13);
+                psString[13]=oldName;
+                if (psString[0].equals("")) {
+                    return;
+                }
+                int x = sqlFunction.doSqlUpdate(sqlLanguage, psString);
+                if (x > 0) {
+                    JOptionPane.showMessageDialog(null, "修改成功");
+                    initTable();
+                    delButton.setEnabled(false);
+                    changeButton.setEnabled(false);
+                }
+                super.mouseClicked(e);
+            }
+        });
+        delButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                //删除管理员
+                String sqlLanguage = "DELETE Employee where empNo = ?";
+                String[] psString = {oldName};
+                if (psString[0].equals("")) {
+                    return;
+                }
+                int res=JOptionPane.showConfirmDialog(null, "是否删除”"+oldName+"“的信息", "是否修改", JOptionPane.YES_NO_OPTION);
+                if(res==JOptionPane.YES_OPTION){
+                    int x = sqlFunction.doSqlUpdate(sqlLanguage, psString);
+                    if (x > 0) {
+
+                        JOptionPane.showMessageDialog(null, "删除成功");
+                        initTable();
+                        delButton.setEnabled(false);
+                        changeButton.setEnabled(false);
+                    }
+                }else{
+                    return;
+                }
+                super.mouseClicked(e);
+            }
+        });
     }
 
     @Override
@@ -108,6 +179,7 @@ public class EmployeeManage extends JFrame implements Frame{
         this.setVisible(true);
         initTable();
         initText();
+        noNameDept = new NoName("deptNo","deptTitle","Departments");
         delButton.setEnabled(false);
         changeButton.setEnabled(false);
     }
@@ -129,7 +201,7 @@ public class EmployeeManage extends JFrame implements Frame{
         textField10.setText("");
         textField11.setText("");
         textField12.setText("");
-        String sql="SELECT deptNo FROM Departments";
+        String sql="SELECT deptTitle FROM Departments";
         otherFunction.setComboBoxItem(sql,comboBox1);
     }
 
@@ -148,28 +220,29 @@ public class EmployeeManage extends JFrame implements Frame{
 
     @Override
     public String[] getStrings() {
-        String empNo, empName, empSex, empBirthday, empEntrytime, empProvince, lempCity, empempZip, empAdress, empTelephone, empEmail, deptNo, empPwd;
+        String empNo, empName, empSex, empBirthday, empEntrytime, empProvince, empCity, empempZip, empAdress, empTelephone, empEmail, deptNo, empPwd;
         empNo = textField1.getText();
-        empPwd = SHA1.encode(textField12.getText());
+        if (textField2.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "登录密码不能为空!!");
+            return null;
+        }
+        empPwd = SHA1.encode(textField2.getText());
         empName = textField3.getText();
-        empSex = textField4.getText();
+        empSex = textField4.getText().equals("女")? "0":"1";
         empBirthday = comboBox2.getSelectedItem().toString()+"-"+comboBox3.getSelectedItem().toString()+"-"+"01";
         empEntrytime = comboBox4.getSelectedItem().toString()+"-"+comboBox5.getSelectedItem().toString()+"-"+comboBox6.getSelectedItem().toString();
         empProvince = textField7.getText();
-        lempCity = textField8.getText();
+        empCity = textField8.getText();
         empempZip = textField9.getText();
         empAdress = textField10.getText();
         empTelephone = textField11.getText();
         empEmail = textField12.getText();
-        deptNo = Objects.requireNonNull(comboBox1.getSelectedItem()).toString();
+        String deptTitle = Objects.requireNonNull(comboBox1.getSelectedItem()).toString();
+        deptNo = noNameDept.getNo(deptTitle);
 
 
         if (empNo.equals("")) {
             JOptionPane.showMessageDialog(null, "员工编号不能为空!!");
-            return null;
-        }
-        if (empPwd.equals("")) {
-            JOptionPane.showMessageDialog(null, "登录密码不能为空!!");
             return null;
         }
         if (empName.equals("")) {
@@ -196,7 +269,7 @@ public class EmployeeManage extends JFrame implements Frame{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new String[]{empNo, empName, empSex, empBirthday, empEntrytime, empProvince, lempCity, empempZip, empAdress, empTelephone, empEmail, deptNo, empPwd};
+        return new String[]{empNo, empName, empSex, empBirthday, empEntrytime, empProvince, empCity, empempZip, empAdress, empTelephone, empEmail, deptNo, empPwd};
     }
 
 }

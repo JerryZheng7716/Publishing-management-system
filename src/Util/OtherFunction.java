@@ -64,36 +64,37 @@ public class OtherFunction {
 		}
 	}
 
-//	public String Login(String AdminName,String AdminPassWord){
-//		sqlFunction = new SqlFunction();
-//		if (StringUtil.isEmpty(AdminName) || StringUtil.isEmpty(AdminPassWord)) {
-//			JOptionPane.showMessageDialog(null, "�û��������벻��Ϊ�գ�");
-//		} else {
-//			AdminPassWord=SHA1.encode(AdminPassWord);
-//			String sqlLanguage = "SELECT * FROM tb_admin WHERE AdminName=? and AdminPassWord=?";
-//			String[] psString = { AdminName, AdminPassWord };
-//			ResultSet resultSet=null;
-//			resultSet=sqlFunction.doSqlSelect(sqlLanguage,psString,false);
-//			try {
-//				if (resultSet.next()) {
-//					return "Success";
-//				} else {
-//					sqlLanguage = "SELECT * FROM tb_admin WHERE AdminName = ?";
-//					psString = new String[]{ AdminName};
-//					if (sqlFunction.doSqlSelect(sqlLanguage,psString,false).next()) {
-//						JOptionPane.showMessageDialog(null,"�������");
-//						return "passwordErro";
-//					}
-//					JOptionPane.showMessageDialog(null,"�����ڵ�ǰ�û�����");
-//					return "NoneAcount";
-//				}
-//			}  catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//			sqlFunction.closeAllLink();
-//		}
-//		return null;
-//	}
+	public String Login(String AdminName,String AdminPassWord){
+		sqlFunction = new SqlFunction();
+		if (StringUtil.isEmpty(AdminName) || StringUtil.isEmpty(AdminPassWord)) {
+			JOptionPane.showMessageDialog(null, "工号或密码不能为空！");
+			return "CanNotNull";
+		} else {
+			AdminPassWord=SHA1.encode(AdminPassWord);
+			String sqlLanguage = "SELECT * FROM Employee WHERE empNo=? and empPwd=?";
+			String[] psString = { AdminName, AdminPassWord };
+			ResultSet resultSet=null;
+			resultSet=sqlFunction.doSqlSelect(sqlLanguage,psString,false);
+			try {
+				if (resultSet.next()) {
+					return "Success";
+				} else {
+					sqlLanguage = "SELECT * FROM Employee WHERE empNo = ?";
+					psString = new String[]{ AdminName};
+					if (sqlFunction.doSqlSelect(sqlLanguage,psString,false).next()) {
+						JOptionPane.showMessageDialog(null,"密码错误！");
+						return "passwordErro";
+					}
+					JOptionPane.showMessageDialog(null,"不存在当前工号！");
+					return "NoneAcount";
+				}
+			}  catch (SQLException e) {
+				e.printStackTrace();
+			}
+			sqlFunction.closeAllLink();
+		}
+		return null;
+	}
 }
 
 

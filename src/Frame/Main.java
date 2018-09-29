@@ -1,40 +1,91 @@
 package Frame;
 
+import Util.LoginInfo;
+import Util.OtherFunction;
+import Util.SqlFunction;
+
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Main {
     private JPanel panel1;
-    private JTable table1;
+    private JTextField textField1;
+    private JButton 登录Button;
+    private JPanel background;
+    private JPasswordField passwordField1;
+    private JLabel tittle;
+    private JLabel gonghao;
+    private JLabel 密码Label;
+    private SqlFunction sqlFunction = new SqlFunction();
+    private JMenuBar jMenuBar = new JMenuBar();
+
 
     private  void  init(){
-        final Object[] columnNames = {"姓名", "性别", "家庭地址","电话号码", "生日", "工作", "收入", "婚姻状况","恋爱状况"};
-        Object[][] rowData = {                {"ddd", "男", "江苏南京", "1378313210", "03/24/1985", "学生", "寄生中", "未婚", "没"},
-                {"eee", "女", "江苏南京", "13645181705", "xx/xx/1985", "家教", "未知", "未婚", "好象没"},
-                {"fff", "男", "江苏南京", "13585331486", "12/08/1985", "汽车推销员", "不确定", "未婚", "有"},
-                {"ggg", "女", "江苏南京", "81513779", "xx/xx/1986", "宾馆服务员", "确定但未知", "未婚", "有"},
-                {"hhh", "男", "江苏南京", "13651545936", "xx/xx/1985", "学生", "流放中", "未婚", "无数次分手后没有"}
-        };        Object obj = "Hello";
-        TableColumn column = new TableColumn();
-        column.setHeaderValue(columnNames);//
-        table1.addColumn(column);//
-        TableModel dataModel = new DefaultTableModel(rowData,columnNames);
-        table1.setModel(dataModel);
-        table1.updateUI();
+        jMenuBar.setVisible(false);
+        initLogin();
+        showFrame();
     }
 
     public static void main(String[] args) {
-
-        JFrame jFrame = new JFrame("出版社管理系统");
-        Main main =new Main();
-        jFrame.setContentPane(main.panel1);
+        Main main = new Main();
         main.init();
+    }
 
-        JMenuBar jMenuBar = new JMenuBar();
+    private void initLogin(){
+        登录Button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String empNo,empPwd;
+                empNo = textField1.getText();
+                empPwd = new String(passwordField1.getPassword());
+                OtherFunction otherFunction = new OtherFunction();
+                if(LoginInfo.isIsLogin()){
+                    tittle.setText("登录您的账号");
+                    登录Button.setText("登录");
+                    LoginInfo.setIsLogin(false);
+                    LoginInfo.setEmpNo("");
+                    LoginInfo.setEmpName("");
+                    gonghao.setText("工号");
+                    textField1.setText("");
+                    textField1.setEnabled(true);
+                    passwordField1.setVisible(true);
+                    passwordField1.setEnabled(true);
+                    passwordField1.setText("");
+                    密码Label.setVisible(true);
+                    jMenuBar.setVisible(false);
+                }else {
+                    if (otherFunction.Login(empNo,empPwd).equals("Success")){
+                        tittle.setText("欢迎您");
+                        登录Button.setText("注销登录");
+                        LoginInfo.setIsLogin(true);
+                        LoginInfo.setEmpNo(empNo);
+                        ResultSet resultSet = sqlFunction.doSqlSelect("SELECT empName FROM  Employee WHERE empNo = ?",new String[]{empNo},false);
+                        try {
+                            resultSet.next();
+                            LoginInfo.setEmpName(resultSet.getString(1));
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+                        gonghao.setText("用户名");
+                        textField1.setText(LoginInfo.getEmpName());
+                        textField1.setEnabled(false);
+                        passwordField1.setVisible(false);
+                        passwordField1.setEnabled(false);
+                        密码Label.setVisible(false);
+                        jMenuBar.setVisible(true);
+                    }
+                }
+            }
+        });
+    }
+
+    private void showFrame(){
+        JFrame jFrame = new JFrame("出版社管理系统");
+        jFrame.setContentPane(this.panel1);
+
         JMenu jMenu = new JMenu("图书印刷管理");
         JMenuItem menuFirstPrint = new JMenuItem("首版书印刷");
         JMenuItem menuAddPrint = new JMenuItem("加印");
@@ -71,18 +122,18 @@ public class Main {
         jMenu3.add(menuAuthorManage);
         jMenu3.add(menuMerchantManage);
         jMenuBar.add(jMenu3);
-        DeptManage deptManage = new DeptManage();
         menuDeptManage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                DeptManage deptManage = new DeptManage();
                 deptManage.showFrame();
             }
 
         });
-        EmployeeManage employeeManage = new EmployeeManage();
         menuEmployeeManage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                EmployeeManage employeeManage = new EmployeeManage();
                 employeeManage.showFrame();
             }
 
@@ -111,7 +162,6 @@ public class Main {
         jFrame.setVisible(true);
         jFrame.setSize(800,500);
         jFrame.setLocation(500,260);
-
     }
 
 }
