@@ -164,6 +164,14 @@ public class Main {
             }
         });
 
+        menuBookManage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Frame frame = new BookManage();
+                frame.showFrame();
+            }
+        });
+
         //基本信息管理
 
         JMenu jMenu4 = new JMenu("查询统计");

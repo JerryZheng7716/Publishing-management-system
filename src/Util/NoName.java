@@ -34,8 +34,8 @@ public class NoName {
         try {
             while (resultSet.next()){
                 NoNameItem noNameItem = new NoNameItem();
-                noNameItem.no=resultSet.getString(1);
-                noNameItem.name=resultSet.getString(2);
+                noNameItem.no=resultSet.getString(1).trim();
+                noNameItem.name=resultSet.getString(2).trim();
                 noName.add(noNameItem);
             }
         } catch (SQLException e) {

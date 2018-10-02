@@ -1,6 +1,7 @@
 package Frame;
 
 import Util.BasicOperation;
+import Util.FillNumber;
 import Util.OtherFunction;
 import Util.SqlFunction;
 
@@ -128,9 +129,7 @@ public class BookTypeManage extends JFrame implements Frame {
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, "类型编号为2位数字");
         }
-        if(Integer.valueOf(typeNo)<=9){
-            typeNo="0"+typeNo;
-        }
+        typeNo=FillNumber.fill(typeNo,2);
         String sqlLanguage1 = "SELECT * FROM Types WHERE typeNo = ?";
         String[] psString1 = {typeNo};
         try {

@@ -30,7 +30,7 @@ public  class BasicOperation {
      * @param oldName 需要修改的记录的原主键值
      */
     public static void change(String sqlLanguage,String[] ps,String oldName){
-        int count = appearNumber(sqlLanguage,"?");
+        int count = appearNumber(sqlLanguage);
         String[] psString = new String[count];
         if (ps==null){
             return;
@@ -66,15 +66,14 @@ public  class BasicOperation {
     }
 
     /**
-     * 获取指定字符串出现的次数
+     * 获取?出现的次数
      *
      * @param srcText 源字符串
-     * @param findText 要查找的字符串
      * @return 出现的次数
      */
-    private static int appearNumber(String srcText, String findText) {
+    private static int appearNumber(String srcText) {
         int count = 0;
-        Pattern p = Pattern.compile(findText);
+        Pattern p = Pattern.compile("[?]");
         Matcher m = p.matcher(srcText);
         while (m.find()) {
             count++;
