@@ -160,8 +160,8 @@ public class AuthorManage extends JFrame implements Frame{
         this.setVisible(true);
         initTable();
         initText();
-//        delButton.setEnabled(false);
-//        changeButton.setEnabled(false);
+        delButton.setEnabled(false);
+        changeButton.setEnabled(false);
     }
 
     @Override

@@ -112,12 +112,14 @@ public class Main {
         JMenu jMenu3 = new JMenu("基本信息管理");
         JMenuItem menuDeptManage = new JMenuItem("部门管理");
         JMenuItem menuEmployeeManage = new JMenuItem("员工管理");
+        JMenuItem menuBookTypeManage = new JMenuItem("图书类目管理");
         JMenuItem menuBookManage = new JMenuItem("图书管理");
         JMenuItem menuAuthorManage = new JMenuItem("作者管理");
         JMenuItem menuMerchantManage = new JMenuItem("商家管理");
         JMenuItem menuWarehouseManage = new JMenuItem("仓库管理");
         jMenu3.add(menuDeptManage);
         jMenu3.add(menuEmployeeManage);
+        jMenu3.add(menuBookTypeManage);
         jMenu3.add(menuBookManage);
         jMenu3.add(menuAuthorManage);
         jMenu3.add(menuMerchantManage);
@@ -126,16 +128,16 @@ public class Main {
         menuDeptManage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DeptManage deptManage = new DeptManage();
-                deptManage.showFrame();
+                Frame frame = new DeptManage();
+                frame.showFrame();
             }
 
         });
         menuEmployeeManage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EmployeeManage employeeManage = new EmployeeManage();
-                employeeManage.showFrame();
+                Frame frame = new EmployeeManage();
+                frame.showFrame();
             }
 
         });
@@ -143,16 +145,25 @@ public class Main {
         menuAuthorManage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AuthorManage authorManage = new AuthorManage();
-                authorManage.showFrame();
+                Frame frame = new AuthorManage();
+                frame.showFrame();
             }
         });
         menuWarehouseManage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                Frame frame = new WarehouseManage();
+                frame.showFrame();
             }
         });
+        menuBookTypeManage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Frame frame = new BookTypeManage();
+                frame.showFrame();
+            }
+        });
+
         //基本信息管理
 
         JMenu jMenu4 = new JMenu("查询统计");

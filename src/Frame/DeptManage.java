@@ -168,9 +168,13 @@ public class DeptManage extends JFrame implements Frame {
             JOptionPane.showMessageDialog(null, "部门编号不能为空!!");
             return null;
         }
-        if (Integer.parseInt(deptNO) >= 100) {
+        try{
+            if (Integer.parseInt(deptNO) >= 100) {
+                JOptionPane.showMessageDialog(null, "部门编号为2位数字");
+                return null;
+            }
+        }catch (Exception e){
             JOptionPane.showMessageDialog(null, "部门编号为2位数字");
-            return null;
         }
         if (deptTitle.equals("")) {
             JOptionPane.showMessageDialog(null, "部门名不能为空!!");
