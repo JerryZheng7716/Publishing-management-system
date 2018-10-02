@@ -47,12 +47,12 @@ public class BookManage extends JFrame implements Frame {
                         .split("-");
                 timeStrings[1] = (Integer.parseInt(timeStrings[1])) + "";//转换成int 再转 String 把前面的0去掉
                 timeStrings[2] = (Integer.parseInt(timeStrings[2])) + "";//转换成int 再转 String 把前面的0去掉
-                OtherFunction.setComboboxSelect(comboBox1, timeStrings[0]);
-                OtherFunction.setComboboxSelect(comboBox2, timeStrings[1]);
-                OtherFunction.setComboboxSelect(comboBox3, timeStrings[2]);
+                OtherFunction.setComboBoxSelect(comboBox1, timeStrings[0]);
+                OtherFunction.setComboBoxSelect(comboBox2, timeStrings[1]);
+                OtherFunction.setComboBoxSelect(comboBox3, timeStrings[2]);
                 textField5.setText((String) table1.getValueAt(index, 5));
                 textField6.setText((String) table1.getValueAt(index, 6));
-                OtherFunction.setComboboxSelect(comboBox4,(String) table1.getValueAt(index, 7));
+                OtherFunction.setComboBoxSelect(comboBox4,(String) table1.getValueAt(index, 7));
 
                 String sql = "SELECT typeNo FROM BookType WHERE bkNo=?";
                 String[] ps = new String[]{(String) table1.getValueAt(index, 0)};
@@ -188,9 +188,6 @@ public class BookManage extends JFrame implements Frame {
 
     @Override
     public void initText() {
-        dateCombobox.initMonthCombobox();
-        dateCombobox.initYearCombobox();
-        dateCombobox.initDayCombobox();
         String sql = "SELECT whNo FROM Warehouse";
         OtherFunction.setComboBoxItem(sql,comboBox4);
     }
@@ -205,7 +202,7 @@ public class BookManage extends JFrame implements Frame {
         TableModel dataModel = new DefaultTableModel(rowData, columnNames);
         table1.setModel(dataModel);
         String sqlLanguage = "SELECT * FROM Books";
-        OtherFunction.selectTable(sqlLanguage, new String[]{}, table1);
+        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
 
         final Object[] columnNames1 = {"类型编号", "类型名称"};
         Object[][] rowData1 = {};
@@ -215,7 +212,7 @@ public class BookManage extends JFrame implements Frame {
         TableModel dataModel1 = new DefaultTableModel(rowData1, columnNames1);
         table2.setModel(dataModel1);
         String sqlLanguage1 = "SELECT typeNo,typeTitle FROM Types";
-        OtherFunction.selectTable(sqlLanguage1, new String[]{}, table2);
+        OtherFunction.setTable(sqlLanguage1, new String[]{}, table2);
         dateCombobox = new DateCombobox(comboBox1,comboBox2,comboBox3);
     }
 

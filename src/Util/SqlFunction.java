@@ -11,6 +11,14 @@ public class SqlFunction {
     private static PreparedStatement preparedStatement = null;
     private static int x = 0;
     private static ResultSet resultSet=null;
+
+    /**
+     * 快速执行查询数据
+     * @param sqlLanguage 数据库语句
+     * @param psString 需要填坑的字段
+     * @param isLike 是否模糊查询
+     * @return 查询的resultSet结果
+     */
     public static ResultSet doSqlSelect(String sqlLanguage , String[] psString,boolean isLike){
         try {
             Class.forName(driver);
@@ -33,7 +41,13 @@ public class SqlFunction {
         }
         return resultSet;
     }
-    
+
+    /**
+     * 快速执行数据库的插入、修改等操作
+     * @param sqlLanguage 数据库语句
+     * @param psString 需要填坑的字段
+     * @return 影响的行数
+     */
     public static int doSqlUpdate(String sqlLanguage , String[] psString){
         try {
             Class.forName(driver);
@@ -51,8 +65,10 @@ public class SqlFunction {
         closeAllLink();
 		return x;
     }
-    
 
+    /**
+     * 快速关闭当前所有的链接，释放资源
+     */
     static void  closeAllLink(){
         try {
             if (connection!=null){

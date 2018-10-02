@@ -1,5 +1,8 @@
 package Util;
 
+/**
+ * 保存登录信息
+ */
 public class LoginInfo {
     private static boolean isLogin=false;
     private static String empNo;

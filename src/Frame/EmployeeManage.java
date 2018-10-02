@@ -57,16 +57,16 @@ public class EmployeeManage extends JFrame implements Frame{
                         .split("-");
                 timeStrings[1] = (Integer.parseInt(timeStrings[1])) + "";//转换成int 再转 String 把前面的0去掉
                 timeStrings[2] = (Integer.parseInt(timeStrings[2])) + "";//转换成int 再转 String 把前面的0去掉
-                OtherFunction.setComboboxSelect(comboBox2, timeStrings[0]);
-                OtherFunction.setComboboxSelect(comboBox3, timeStrings[1]);
+                OtherFunction.setComboBoxSelect(comboBox2, timeStrings[0]);
+                OtherFunction.setComboBoxSelect(comboBox3, timeStrings[1]);
 
                 timeStrings = ((String) table1.getValueAt(index, 4))
                         .split("-");
                 timeStrings[1] = (Integer.parseInt(timeStrings[1])) + "";//转换成int 再转 String 把前面的0去掉
                 timeStrings[2] = (Integer.parseInt(timeStrings[2])) + "";//转换成int 再转 String 把前面的0去掉
-                OtherFunction.setComboboxSelect(comboBox4, timeStrings[0]);
-                OtherFunction.setComboboxSelect(comboBox5, timeStrings[1]);
-                OtherFunction.setComboboxSelect(comboBox6, timeStrings[2]);
+                OtherFunction.setComboBoxSelect(comboBox4, timeStrings[0]);
+                OtherFunction.setComboBoxSelect(comboBox5, timeStrings[1]);
+                OtherFunction.setComboBoxSelect(comboBox6, timeStrings[2]);
 
                 textField7.setText((String) table1.getValueAt(index, 5));
                 textField8.setText((String) table1.getValueAt(index, 6));
@@ -74,23 +74,11 @@ public class EmployeeManage extends JFrame implements Frame{
                 textField10.setText((String) table1.getValueAt(index, 8));
                 textField11.setText((String) table1.getValueAt(index, 9));
                 textField12.setText((String) table1.getValueAt(index, 10));
-                OtherFunction.setComboboxSelect(comboBox1, noNameDept.getName((String) table1.getValueAt(index, 11)));
+                OtherFunction.setComboBoxSelect(comboBox1, noNameDept.getName((String) table1.getValueAt(index, 11)));
                 changeButton.setEnabled(true);
                 delButton.setEnabled(true);
                 oldName = textField1.getText();
                 super.mousePressed(e);
-            }
-        });
-        comboBox5.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                dateComboboxEntrytime.initDayCombobox();
-            }
-        });
-        comboBox4.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                dateComboboxEntrytime.initDayCombobox();
             }
         });
         addButton.addMouseListener(new MouseAdapter() {
@@ -187,11 +175,6 @@ public class EmployeeManage extends JFrame implements Frame{
         textField2.setText("");
         textField3.setText("");
         textField4.setText("");
-        dateComboboxBirthday.initYearCombobox();
-        dateComboboxBirthday.initMonthCombobox();
-        dateComboboxEntrytime.initMonthCombobox();
-        dateComboboxEntrytime.initYearCombobox();
-        dateComboboxEntrytime.initDayCombobox();
         textField7.setText("");
         textField8.setText("");
         textField9.setText("");
@@ -212,7 +195,7 @@ public class EmployeeManage extends JFrame implements Frame{
         TableModel dataModel = new DefaultTableModel(rowData, columnNames);
         table1.setModel(dataModel);
         String sqlLanguage = "SELECT * FROM Employee";
-        OtherFunction.selectTable(sqlLanguage, new String[]{}, table1);
+        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
     }
 
     @Override

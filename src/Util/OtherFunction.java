@@ -10,7 +10,13 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class OtherFunction {
-	public static void selectTable(String sqlLanguage,String[] psString,JTable jTable1) {
+	/**
+	 * 使用数据库语言，录入table的内容
+	 * @param sqlLanguage 数据库语句
+	 * @param psString 需要填坑的字段
+	 * @param jTable1 需要被填充的table
+	 */
+	public static void setTable(String sqlLanguage, String[] psString, JTable jTable1) {
 		int count=0;
 		((DefaultTableModel) jTable1.getModel()).getDataVector().clear(); //移除原来的数据
 		DefaultTableModel defaultTableModel = (DefaultTableModel) jTable1.getModel();
@@ -37,6 +43,12 @@ public class OtherFunction {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * 使用将数据库中的某个字段，设置进ComboBox
+	 * @param sqlLanguage 数据库语句
+	 * @param jComboBox1 需要被设置的ComboBox
+	 */
 	public static void setComboBoxItem(String sqlLanguage,JComboBox jComboBox1){
 		ResultSet resultSet = null;
 		String[] psString = {};
@@ -50,8 +62,13 @@ public class OtherFunction {
 		}
 		SqlFunction.closeAllLink();
 	}
-	
-	public static void setComboboxSelect(JComboBox jComboBox1,String selectString) {
+
+	/**
+	 * 让ComboBox选中某个字段
+	 * @param jComboBox1 需要操作的ComboBox
+	 * @param selectString 需要被选中的字段
+	 */
+	public static void setComboBoxSelect(JComboBox jComboBox1, String selectString) {
 		int count = jComboBox1.getItemCount();
 		for (int i = 0; i < count; i++) {
 			if (jComboBox1.getItemAt(i).equals(selectString)) {
@@ -61,6 +78,12 @@ public class OtherFunction {
 		}
 	}
 
+	/**
+	 * 执行登录操作
+	 * @param AdminName 用户名
+	 * @param AdminPassWord 密码
+	 * @return 登录结果
+	 */
 	public static String Login(String AdminName,String AdminPassWord){
 		if (StringUtil.isEmpty(AdminName) || StringUtil.isEmpty(AdminPassWord)) {
 			JOptionPane.showMessageDialog(null, "工号或密码不能为空！");

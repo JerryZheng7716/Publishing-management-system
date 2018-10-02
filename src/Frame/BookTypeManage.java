@@ -108,7 +108,7 @@ public class BookTypeManage extends JFrame implements Frame {
         table1.setModel(dataModel);
 
         String sqlLanguage = "SELECT * FROM Types";
-        OtherFunction.selectTable(sqlLanguage, new String[]{}, table1);
+        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
     }
 
     @Override

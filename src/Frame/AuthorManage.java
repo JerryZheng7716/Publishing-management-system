@@ -87,7 +87,7 @@ public class AuthorManage extends JFrame implements Frame{
                 textField4.setText((String) table1.getValueAt(index, 3));
                 textField5.setText((String) table1.getValueAt(index, 4));
                 String pv=(String) table1.getValueAt(index, 5);
-                OtherFunction.setComboboxSelect(comboBox1,pv.replaceAll(" ",""));
+                OtherFunction.setComboBoxSelect(comboBox1,pv.replaceAll(" ",""));
                 textField7.setText((String) table1.getValueAt(index, 6));
                 textField8.setText((String) table1.getValueAt(index, 7));
                 textField9.setText((String) table1.getValueAt(index, 8));
@@ -181,7 +181,7 @@ public class AuthorManage extends JFrame implements Frame{
         TableModel dataModel = new DefaultTableModel(rowData, columnNames);
         table1.setModel(dataModel);
         String sqlLanguage = "SELECT * FROM Authors";
-        OtherFunction.selectTable(sqlLanguage, new String[]{}, table1);
+        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
     }
 
     @Override

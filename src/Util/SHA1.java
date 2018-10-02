@@ -22,9 +22,14 @@ public final class SHA1 {
             buf.append(HEX_DIGITS[bytes[j] & 0x0f]);  
         }  
         return buf.toString();  
-    }  
-  
-    public static String encode(String str) {  //将明文转换为SHA1密文
+    }
+
+    /**
+     * 将明文转换为SHA1密文
+     * @param str 需要被加密的明文
+     * @return 密文
+     */
+    public static String encode(String str) {
         if (str == null) {  
             return null;  
         }  

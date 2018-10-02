@@ -36,7 +36,7 @@ public class WarehouseManage extends JFrame implements Frame {
             public void mousePressed(MouseEvent e) {
                 int index = table1.getSelectedRow();
                 textField1.setText((String) table1.getValueAt(index, 0));
-                OtherFunction.setComboboxSelect(comboBox1,noName.getName((String) table1.getValueAt(index, 1)));
+                OtherFunction.setComboBoxSelect(comboBox1,noName.getName((String) table1.getValueAt(index, 1)));
                 textField2.setText((String) table1.getValueAt(index, 2));
                 textField3.setText(((String) table1.getValueAt(index, 3)).trim());
                 textField4.setText((String) table1.getValueAt(index, 4));
@@ -149,7 +149,7 @@ public class WarehouseManage extends JFrame implements Frame {
         table1.setModel(dataModel);
 
         String sqlLanguage = "SELECT * FROM Warehouse";
-        OtherFunction.selectTable(sqlLanguage, new String[]{}, table1);
+        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
     }
 
     @Override
