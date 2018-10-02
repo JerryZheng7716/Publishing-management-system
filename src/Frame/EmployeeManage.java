@@ -10,7 +10,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
@@ -36,8 +35,6 @@ public class EmployeeManage extends JFrame implements Frame{
     private JComboBox comboBox4;
     private JComboBox comboBox5;
     private JComboBox comboBox6;
-    private OtherFunction otherFunction = new OtherFunction();
-    private SqlFunction sqlFunction = new SqlFunction();
     private String oldName = "防止重名没有作用DEFE32";
     private DateCombobox dateComboboxBirthday = new DateCombobox(comboBox2,comboBox3,null);
     private DateCombobox dateComboboxEntrytime = new DateCombobox(comboBox4,comboBox5,comboBox6);
@@ -60,16 +57,16 @@ public class EmployeeManage extends JFrame implements Frame{
                         .split("-");
                 timeStrings[1] = (Integer.parseInt(timeStrings[1])) + "";//转换成int 再转 String 把前面的0去掉
                 timeStrings[2] = (Integer.parseInt(timeStrings[2])) + "";//转换成int 再转 String 把前面的0去掉
-                otherFunction.setComboboxSelect(comboBox2, timeStrings[0]);
-                otherFunction.setComboboxSelect(comboBox3, timeStrings[1]);
+                OtherFunction.setComboboxSelect(comboBox2, timeStrings[0]);
+                OtherFunction.setComboboxSelect(comboBox3, timeStrings[1]);
 
                 timeStrings = ((String) table1.getValueAt(index, 4))
                         .split("-");
                 timeStrings[1] = (Integer.parseInt(timeStrings[1])) + "";//转换成int 再转 String 把前面的0去掉
                 timeStrings[2] = (Integer.parseInt(timeStrings[2])) + "";//转换成int 再转 String 把前面的0去掉
-                otherFunction.setComboboxSelect(comboBox4, timeStrings[0]);
-                otherFunction.setComboboxSelect(comboBox5, timeStrings[1]);
-                otherFunction.setComboboxSelect(comboBox6, timeStrings[2]);
+                OtherFunction.setComboboxSelect(comboBox4, timeStrings[0]);
+                OtherFunction.setComboboxSelect(comboBox5, timeStrings[1]);
+                OtherFunction.setComboboxSelect(comboBox6, timeStrings[2]);
 
                 textField7.setText((String) table1.getValueAt(index, 5));
                 textField8.setText((String) table1.getValueAt(index, 6));
@@ -77,7 +74,7 @@ public class EmployeeManage extends JFrame implements Frame{
                 textField10.setText((String) table1.getValueAt(index, 8));
                 textField11.setText((String) table1.getValueAt(index, 9));
                 textField12.setText((String) table1.getValueAt(index, 10));
-                otherFunction.setComboboxSelect(comboBox1, noNameDept.getName((String) table1.getValueAt(index, 11)));
+                OtherFunction.setComboboxSelect(comboBox1, noNameDept.getName((String) table1.getValueAt(index, 11)));
                 changeButton.setEnabled(true);
                 delButton.setEnabled(true);
                 oldName = textField1.getText();
@@ -106,7 +103,7 @@ public class EmployeeManage extends JFrame implements Frame{
                 if (psString == null) {
                     return;
                 }
-                int x = sqlFunction.doSqlUpdate(sqlLanguage, psString);
+                int x = SqlFunction.doSqlUpdate(sqlLanguage, psString);
                 if (x > 0) {
                     JOptionPane.showMessageDialog(null, "插入成功");
                     initTable();
@@ -132,7 +129,7 @@ public class EmployeeManage extends JFrame implements Frame{
                 if (psString[0].equals("")) {
                     return;
                 }
-                int x = sqlFunction.doSqlUpdate(sqlLanguage, psString);
+                int x = SqlFunction.doSqlUpdate(sqlLanguage, psString);
                 if (x > 0) {
                     JOptionPane.showMessageDialog(null, "修改成功");
                     initTable();
@@ -153,7 +150,7 @@ public class EmployeeManage extends JFrame implements Frame{
                 }
                 int res=JOptionPane.showConfirmDialog(null, "是否删除”"+oldName+"“的信息", "是否修改", JOptionPane.YES_NO_OPTION);
                 if(res==JOptionPane.YES_OPTION){
-                    int x = sqlFunction.doSqlUpdate(sqlLanguage, psString);
+                    int x = SqlFunction.doSqlUpdate(sqlLanguage, psString);
                     if (x > 0) {
 
                         JOptionPane.showMessageDialog(null, "删除成功");
@@ -202,7 +199,7 @@ public class EmployeeManage extends JFrame implements Frame{
         textField11.setText("");
         textField12.setText("");
         String sql="SELECT deptTitle FROM Departments";
-        otherFunction.setComboBoxItem(sql,comboBox1);
+        OtherFunction.setComboBoxItem(sql,comboBox1);
     }
 
     @Override
@@ -215,7 +212,7 @@ public class EmployeeManage extends JFrame implements Frame{
         TableModel dataModel = new DefaultTableModel(rowData, columnNames);
         table1.setModel(dataModel);
         String sqlLanguage = "SELECT * FROM Employee";
-        otherFunction.selectTable(sqlLanguage, new String[]{}, table1);
+        OtherFunction.selectTable(sqlLanguage, new String[]{}, table1);
     }
 
     @Override
@@ -260,7 +257,7 @@ public class EmployeeManage extends JFrame implements Frame{
         String sqlLanguage1 = "SELECT * FROM Employee WHERE empNo = ?";
         String[] psString1 = {empNo};
         try {
-            if (sqlFunction.doSqlSelect(sqlLanguage1, psString1, false).next()
+            if (SqlFunction.doSqlSelect(sqlLanguage1, psString1, false).next()
                     && !empNo.equals(oldName)) {
                 JOptionPane.showMessageDialog(null, "已经存在当前人员编号!!");
                 oldName = empNo;

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 这是一个工具类，用以数据库的编号和名称的快速转换，如将部门名称转换为部门编号
+ * 这是一个工具类,用以数据库的编号和名称的快速转换,如将部门名称转换为部门编号
  * Create by JerryZheng
  * 温州商学院 2018-9-26
  */

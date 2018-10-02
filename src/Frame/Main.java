@@ -19,12 +19,11 @@ public class Main {
     private JLabel tittle;
     private JLabel gonghao;
     private JLabel 密码Label;
-    private SqlFunction sqlFunction = new SqlFunction();
     private JMenuBar jMenuBar = new JMenuBar();
 
 
     private  void  init(){
-        jMenuBar.setVisible(false);
+//        jMenuBar.setVisible(false);
         initLogin();
         showFrame();
     }
@@ -57,12 +56,12 @@ public class Main {
                     密码Label.setVisible(true);
                     jMenuBar.setVisible(false);
                 }else {
-                    if (otherFunction.Login(empNo,empPwd).equals("Success")){
+                    if (OtherFunction.Login(empNo,empPwd).equals("Success")){
                         tittle.setText("欢迎您");
                         登录Button.setText("注销登录");
                         LoginInfo.setIsLogin(true);
                         LoginInfo.setEmpNo(empNo);
-                        ResultSet resultSet = sqlFunction.doSqlSelect("SELECT empName FROM  Employee WHERE empNo = ?",new String[]{empNo},false);
+                        ResultSet resultSet = SqlFunction.doSqlSelect("SELECT empName FROM  Employee WHERE empNo = ?",new String[]{empNo},false);
                         try {
                             resultSet.next();
                             LoginInfo.setEmpName(resultSet.getString(1));
@@ -116,11 +115,13 @@ public class Main {
         JMenuItem menuBookManage = new JMenuItem("图书管理");
         JMenuItem menuAuthorManage = new JMenuItem("作者管理");
         JMenuItem menuMerchantManage = new JMenuItem("商家管理");
+        JMenuItem menuWarehouseManage = new JMenuItem("仓库管理");
         jMenu3.add(menuDeptManage);
         jMenu3.add(menuEmployeeManage);
         jMenu3.add(menuBookManage);
         jMenu3.add(menuAuthorManage);
         jMenu3.add(menuMerchantManage);
+        jMenu3.add(menuWarehouseManage);
         jMenuBar.add(jMenu3);
         menuDeptManage.addActionListener(new ActionListener() {
             @Override
@@ -137,6 +138,20 @@ public class Main {
                 employeeManage.showFrame();
             }
 
+        });
+
+        menuAuthorManage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AuthorManage authorManage = new AuthorManage();
+                authorManage.showFrame();
+            }
+        });
+        menuWarehouseManage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
         });
         //基本信息管理
 

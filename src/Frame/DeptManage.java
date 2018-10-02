@@ -23,8 +23,6 @@ public class DeptManage extends JFrame implements Frame {
     private JTextField textField4;
     private JTextField textField5;
     private JScrollPane scroll;
-    private OtherFunction otherFunction = new OtherFunction();
-    private SqlFunction sqlFunction = new SqlFunction();
     private String oldName = "防止重名没有作用DEFE32";
 
 //    public DeptManage(){
@@ -58,7 +56,7 @@ public class DeptManage extends JFrame implements Frame {
                 if (psString == null) {
                     return;
                 }
-                int x = sqlFunction.doSqlUpdate(sqlLanguage, psString);
+                int x = SqlFunction.doSqlUpdate(sqlLanguage, psString);
                 if (x > 0) {
                     JOptionPane.showMessageDialog(null, "插入成功");
                     initTable();
@@ -83,7 +81,7 @@ public class DeptManage extends JFrame implements Frame {
                 if (psString[0].equals("")) {
                     return;
                 }
-                int x = sqlFunction.doSqlUpdate(sqlLanguage, psString);
+                int x = SqlFunction.doSqlUpdate(sqlLanguage, psString);
                 if (x > 0) {
                     JOptionPane.showMessageDialog(null, "修改成功");
                     initTable();
@@ -104,7 +102,7 @@ public class DeptManage extends JFrame implements Frame {
                 }
                 int res=JOptionPane.showConfirmDialog(null, "是否删除”"+oldName+"“的信息", "是否修改", JOptionPane.YES_NO_OPTION);
                 if(res==JOptionPane.YES_OPTION){
-                    int x = sqlFunction.doSqlUpdate(sqlLanguage, psString);
+                    int x = SqlFunction.doSqlUpdate(sqlLanguage, psString);
                     if (x > 0) {
 
                         JOptionPane.showMessageDialog(null, "删除成功");
@@ -145,7 +143,7 @@ public class DeptManage extends JFrame implements Frame {
         table1.setModel(dataModel);
 
         String sqlLanguage = "SELECT * FROM Departments";
-        otherFunction.selectTable(sqlLanguage, new String[]{}, table1);
+        OtherFunction.selectTable(sqlLanguage, new String[]{}, table1);
     }
 
     @Override
@@ -193,7 +191,7 @@ public class DeptManage extends JFrame implements Frame {
         String sqlLanguage1 = "SELECT * FROM Departments WHERE deptNO = ?";
         String[] psString1 = {deptNO};
         try {
-            if (sqlFunction.doSqlSelect(sqlLanguage1, psString1, false).next()
+            if (SqlFunction.doSqlSelect(sqlLanguage1, psString1, false).next()
                     && !deptNO.equals(oldName)) {
                 JOptionPane.showMessageDialog(null, "已经存在当前部门编号!!");
                 oldName = deptNO;

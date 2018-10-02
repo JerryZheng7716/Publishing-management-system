@@ -1,16 +1,17 @@
 package Util;
 import java.sql.*;
 
+
 public class SqlFunction {
-    private String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private String link = "jdbc:sqlserver://10.211.55.3:1433;DatabaseName=Publisher";
-    private String userName = "sa";
-    private String passWord = "123456";
-    private Connection connection= null;
-    private PreparedStatement preparedStatement = null;
-    private int x = 0;
-    private ResultSet resultSet=null;
-    public ResultSet doSqlSelect(String sqlLanguage , String[] psString,boolean isLike){
+    private static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    private static String link = "jdbc:sqlserver://10.211.55.3:1433;DatabaseName=Publisher";
+    private static String userName = "sa";
+    private static String passWord = "123456";
+    private static Connection connection= null;
+    private static PreparedStatement preparedStatement = null;
+    private static int x = 0;
+    private static ResultSet resultSet=null;
+    public static ResultSet doSqlSelect(String sqlLanguage , String[] psString,boolean isLike){
         try {
             Class.forName(driver);
             System.out.println("成功加载驱动");
@@ -33,7 +34,7 @@ public class SqlFunction {
         return resultSet;
     }
     
-    public int doSqlUpdate(String sqlLanguage , String[] psString){
+    public static int doSqlUpdate(String sqlLanguage , String[] psString){
         try {
             Class.forName(driver);
             System.out.println("成功加载驱动");
@@ -52,7 +53,7 @@ public class SqlFunction {
     }
     
 
-    void closeAllLink(){
+    static void  closeAllLink(){
         try {
             if (connection!=null){
                 connection.close();
