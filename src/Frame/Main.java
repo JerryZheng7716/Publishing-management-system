@@ -172,6 +172,14 @@ public class Main {
             }
         });
 
+        menuMerchantManage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Frame frame = new SellersManage();
+                frame.showFrame();
+            }
+        });
+
         //基本信息管理
 
         JMenu jMenu4 = new JMenu("查询统计");

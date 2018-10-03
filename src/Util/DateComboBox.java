@@ -8,9 +8,9 @@ import java.awt.event.ItemListener;
  * 用三个JComboBox制作一个万年历
  * 以便录入日期
  */
-public class DateCombobox {
+public class DateComboBox {
     private JComboBox cbMonth,cbYear,cbDay;
-    public DateCombobox(JComboBox cbYear,JComboBox cbMonth,JComboBox cbDay){
+    public DateComboBox(JComboBox cbYear, JComboBox cbMonth, JComboBox cbDay){
         this.cbDay=cbDay;
         this.cbMonth=cbMonth;
         this.cbYear=cbYear;

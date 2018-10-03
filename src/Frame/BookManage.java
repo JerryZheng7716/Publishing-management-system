@@ -6,10 +6,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -31,9 +28,13 @@ public class BookManage extends JFrame implements Frame {
     private JTextField textField6;
     private JComboBox comboBox4;
     private JTextField textField7;
-    private DateCombobox dateCombobox;
+    private JTable table3;
+    private JTextField textField8;
+    private JButton manageTypeButton;
+    private JButton manageAuthorButton;
+    private DateComboBox dateCombobox;
     private String oldName = "防止重名没有作用DEFE32";
-    private NoName noNameType;
+    private NoName noNameType,noNameAuthor;
     BookManage() {
         table1.addMouseListener(new MouseAdapter() {
             @Override
@@ -60,6 +61,7 @@ public class BookManage extends JFrame implements Frame {
                 textField7.setText("");
                 try{
                     while (resultSet.next()){
+                        String s= resultSet.getString(1);
                         String type = noNameType.getName(resultSet.getString(1));
                         if (textField7.getText().equals("")){
                             textField7.setText(type);
@@ -70,6 +72,24 @@ public class BookManage extends JFrame implements Frame {
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
+
+                sql = "SELECT auNo FROM Authored WHERE bkNo=? ORDER BY auOrder";
+                ps = new String[]{(String) table1.getValueAt(index, 0)};
+                resultSet = SqlFunction.doSqlSelect(sql,ps,false);
+                textField8.setText("");
+                try{
+                    while (resultSet.next()){
+                        String type = noNameAuthor.getName(resultSet.getString(1));
+                        if (textField8.getText().equals("")){
+                            textField8.setText(type);
+                        }else {
+                            textField8.setText(textField8.getText()+";"+type);
+                        }
+                    }
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+
                 delButton.setEnabled(true);
                 changeButton.setEnabled(true);
                 oldName = textField1.getText();
@@ -90,6 +110,10 @@ public class BookManage extends JFrame implements Frame {
                 String[] types = textField7.getText().split(";");
                 delType(psString[0]);
                 addType(psString[0],types);
+
+                String[] au = textField8.getText().split(";");
+                delAuthored(psString[0]);
+                addAuthored(psString[0],au);
                 delButton.setEnabled(false);
                 changeButton.setEnabled(false);
                 initTable();
@@ -100,6 +124,7 @@ public class BookManage extends JFrame implements Frame {
             public void actionPerformed(ActionEvent e) {
                 //修改
                 delType(oldName);
+                delAuthored(oldName);
                 String sqlLanguage = "UPDATE Books SET bkNo=?, bkTitle=?, bkPrice=?, bkWords=?, bkFirstTime=?, bkLastNumber=?, bkPrtQty=?, whNo=? where bkNo = ?";
                 String[] ps = getStrings();
                 if (ps==null){
@@ -108,6 +133,8 @@ public class BookManage extends JFrame implements Frame {
                 BasicOperation.change(sqlLanguage,ps,oldName);
                 String[] types = textField7.getText().split(";");
                 addType(ps[0],types);
+                String[] au = textField8.getText().split(";");
+                addAuthored(ps[0],au);
                 delButton.setEnabled(false);
                 changeButton.setEnabled(false);
                 initTable();
@@ -118,6 +145,7 @@ public class BookManage extends JFrame implements Frame {
             public void actionPerformed(ActionEvent e) {
                 //删除
                 delType(oldName);
+                delAuthored(oldName);
                 String sqlLanguage = "DELETE Books where bkNo = ?";
                 BasicOperation.del(sqlLanguage,oldName);
                 delButton.setEnabled(false);
@@ -136,6 +164,111 @@ public class BookManage extends JFrame implements Frame {
                     textField7.setText(textField7.getText()+";"+s);
                 }
 
+                super.mousePressed(e);
+            }
+        });
+
+        table3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int index = table3.getSelectedRow();
+                String s = ((String) table3.getValueAt(index, 1)).trim();
+                if (textField8.getText().equals("")){
+                    textField8.setText(s);
+                }else {
+                    textField8.setText(textField8.getText()+";"+s);
+                }
+
+                super.mousePressed(e);
+            }
+        });
+
+        manageAuthorButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Frame frame = new AuthorManage();
+                frame.showFrame();
+                ((AuthorManage) frame).addWindowListener(new WindowListener() {
+                    @Override
+                    public void windowOpened(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        initTable();
+                    }
+
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowIconified(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowDeiconified(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowActivated(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowDeactivated(WindowEvent e) {
+
+                    }
+                });
+                super.mousePressed(e);
+            }
+        });
+
+        manageTypeButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Frame frame = new BookTypeManage();
+                frame.showFrame();
+                ((BookTypeManage) frame).addWindowListener(new WindowListener() {
+                    @Override
+                    public void windowOpened(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        initTable();
+                    }
+
+                    @Override
+                    public void windowIconified(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowDeiconified(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowActivated(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowDeactivated(WindowEvent e) {
+
+                    }
+                });
                 super.mousePressed(e);
             }
         });
@@ -165,12 +298,58 @@ public class BookManage extends JFrame implements Frame {
 
     }
 
+    /**
+     *删除原有的type
+     * @param bkNo 需要删除图书编号
+     */
     private void delType(String bkNo){
         //先删除原来的记录
         String sql = "DELETE BookType WHERE bkNo=?";
         String[] ps = new String[]{bkNo};
         SqlFunction.doSqlUpdate(sql,ps);
     }
+
+    /**
+     * 将作者添加到虚表Authored中
+     */
+    private void addAuthored(String bkNo,String[] Author){
+        //再添加记录
+        for (int i = 0; i < Author.length; i++) {
+            Author[i]=noNameAuthor.getNo(Author[i]);
+        }
+        String sql = "INSERT into Authored(bkNo,auNo,auOrder) VALUES(?,?,?)";
+        int order=0;
+        for (int i = 0; i < Author.length; i++) {
+            boolean isHave = false;
+            for (int j = 0; j < i; j++) {
+                if (Author[i].equals(Author[j])){//去重
+                    isHave=true;
+                }
+            }
+            order++;
+            if (!isHave){
+                if(Author[i]==null){
+                    return;
+                }
+                String[] ps = new String[]{bkNo, Author[i],String.valueOf(order)};
+                SqlFunction.doSqlUpdate(sql, ps);
+            }
+        }
+
+    }
+
+    /**
+     *删除原有的type
+     * @param bkNo 需要删除图书编号
+     */
+    private void delAuthored(String bkNo){
+        //先删除原来的记录
+        String sql = "DELETE Authored WHERE bkNo=?";
+        String[] ps = new String[]{bkNo};
+        SqlFunction.doSqlUpdate(sql,ps);
+    }
+
+
     @Override
     public void showFrame() {
         this.setContentPane(this.panel1);
@@ -184,12 +363,14 @@ public class BookManage extends JFrame implements Frame {
         delButton.setEnabled(false);
         changeButton.setEnabled(false);
         noNameType = new NoName("TypeNo","TypeTitle","types");
+        noNameAuthor = new NoName("auNo","auName","Authors");
     }
 
     @Override
     public void initText() {
         String sql = "SELECT whNo FROM Warehouse";
         OtherFunction.setComboBoxItem(sql,comboBox4);
+        dateCombobox = new DateComboBox(comboBox1,comboBox2,comboBox3);
     }
 
     @Override
@@ -213,7 +394,17 @@ public class BookManage extends JFrame implements Frame {
         table2.setModel(dataModel1);
         String sqlLanguage1 = "SELECT typeNo,typeTitle FROM Types";
         OtherFunction.setTable(sqlLanguage1, new String[]{}, table2);
-        dateCombobox = new DateCombobox(comboBox1,comboBox2,comboBox3);
+
+        final Object[] columnNames2 = {"作者编号", "作者姓名"};
+        Object[][] rowData2 = {};
+        TableColumn column2 = new TableColumn();
+        column.setHeaderValue(columnNames2);//
+        table3.addColumn(column2);//
+        TableModel dataModel2 = new DefaultTableModel(rowData2, columnNames2);
+        table3.setModel(dataModel2);
+        String sqlLanguage2 = "SELECT auNo,auName FROM Authors";
+        OtherFunction.setTable(sqlLanguage2, new String[]{}, table3);
+
     }
 
     @Override

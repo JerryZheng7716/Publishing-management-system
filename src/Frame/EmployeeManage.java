@@ -6,8 +6,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -36,8 +34,8 @@ public class EmployeeManage extends JFrame implements Frame{
     private JComboBox comboBox5;
     private JComboBox comboBox6;
     private String oldName = "防止重名没有作用DEFE32";
-    private DateCombobox dateComboboxBirthday = new DateCombobox(comboBox2,comboBox3,null);
-    private DateCombobox dateComboboxEntrytime = new DateCombobox(comboBox4,comboBox5,comboBox6);
+    private DateComboBox dateComboboxBirthday = new DateComboBox(comboBox2,comboBox3,null);
+    private DateComboBox dateComboboxEntrytime = new DateComboBox(comboBox4,comboBox5,comboBox6);
     private NoName noNameDept;
 
     public EmployeeManage() {

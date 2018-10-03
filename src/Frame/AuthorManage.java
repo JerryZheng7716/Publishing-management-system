@@ -1,5 +1,6 @@
 package Frame;
 
+import Util.FillNumber;
 import Util.OtherFunction;
 import Util.Province;
 import Util.SqlFunction;
@@ -71,17 +72,16 @@ public class AuthorManage extends JFrame implements Frame{
             public void mousePressed(MouseEvent e) {
                 int index = table1.getSelectedRow();
                 String idString = (String) table1.getValueAt(index, 0);
-                idString = idString.substring(0,5);//数据库创建了6个字符，截掉一个
                 int id = Integer.parseInt(idString);
-                int id1 = id/1000;
-                int id2 = id%1000;
+                int id1 = id/10000;
+                int id2 = id%10000;
                 if (id1<=9){
                     idProvince.setText("0"+id1);
                 }else {
                     idProvince.setText(id1+"");
                 }
 
-                textField1.setText(String.valueOf(id2));
+                textField1.setText(FillNumber.fill(String.valueOf(id2),4));
                 textField2.setText((String) table1.getValueAt(index, 1));
                 comboBox2.setSelectedIndex(Integer.parseInt((String)table1.getValueAt(index, 2))^1);
                 textField4.setText((String) table1.getValueAt(index, 3));
@@ -187,7 +187,7 @@ public class AuthorManage extends JFrame implements Frame{
     @Override
     public String[] getStrings() {
         String auNo, auName, auSex, auTitle, auTelephone, auProvince, auCity, auZip, auAddress, auEmail, auRemark;
-        auNo = idProvince.getText()+textField1.getText();
+        auNo = idProvince.getText()+FillNumber.fill(textField1.getText(),4);
         auName = textField2.getText();
         auSex = String.valueOf(comboBox2.getSelectedIndex()^1);
         auTitle = textField4.getText();
@@ -204,8 +204,8 @@ public class AuthorManage extends JFrame implements Frame{
             return null;
         }
         try {
-            if (Integer.parseInt(textField1.getText()) >= 1000) {
-                JOptionPane.showMessageDialog(null, "作者编号为3位数字");
+            if (Integer.parseInt(textField1.getText()) >= 10000) {
+                JOptionPane.showMessageDialog(null, "作者编号为4位数字");
                 return null;
             }
         }catch (Exception e){
@@ -220,7 +220,7 @@ public class AuthorManage extends JFrame implements Frame{
             JOptionPane.showMessageDialog(null, "联系电话不能为空!!");
             return null;
         }
-        String sqlLanguage1 = "SELECT * FROM Departments WHERE deptNO = ?";
+        String sqlLanguage1 = "SELECT * FROM Authors WHERE auNo = ?";
         String[] psString1 = {auNo};
         try {
             if (SqlFunction.doSqlSelect(sqlLanguage1, psString1, false).next()
