@@ -58,6 +58,9 @@ public class SellersManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //添加
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 oldName = "防止重名没有作用DEFE32";
                 String sqlLanguage = "INSERT Sellers VALUES(?,?,?,?,?,?,?,?,?,?,?) ";
                 String[] psString = getStrings();
@@ -71,6 +74,9 @@ public class SellersManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //修改
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 String sqlLanguage = "UPDATE Sellers SET selNo = ?, selTitle = ?, selName = ?, selTelephone = ?, selProvince = ?, " +
                         "selCity = ?, selZip = ?, selAddress = ?, selEmail = ?, selDeliAddress = ?, selRemark = ? " +
                         "where selNo = ?";
@@ -85,6 +91,9 @@ public class SellersManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //删除
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 String sqlLanguage = "DELETE Sellers where selNo = ?";
                 BasicOperation.del(sqlLanguage,oldName);
                 delButton.setEnabled(false);

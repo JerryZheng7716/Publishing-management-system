@@ -1,9 +1,6 @@
 package Frame;
 
-import Util.BasicOperation;
-import Util.FillNumber;
-import Util.OtherFunction;
-import Util.SqlFunction;
+import Util.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -44,6 +41,9 @@ public class BookTypeManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //添加
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 oldName = "防止重名没有作用DEFE32";
                 String sqlLanguage = "INSERT Types VALUES(?,?,?) ";
                 String[] psString = getStrings();
@@ -57,6 +57,9 @@ public class BookTypeManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //修改
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 String sqlLanguage = "UPDATE Types SET typeNo=?, typeTitle=?, typeRemark=? where typeNo = ?";
                 String[] ps = getStrings();
                 BasicOperation.change(sqlLanguage,ps,oldName);
@@ -69,6 +72,9 @@ public class BookTypeManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //删除
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 String sqlLanguage = "DELETE Types where typeNo = ?";
                 BasicOperation.del(sqlLanguage,oldName);
                 delButton.setEnabled(false);

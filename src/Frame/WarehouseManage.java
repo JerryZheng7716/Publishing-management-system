@@ -1,5 +1,6 @@
 package Frame;
 
+import Util.LoginInfo;
 import Util.NoName;
 import Util.OtherFunction;
 import Util.SqlFunction;
@@ -51,6 +52,9 @@ public class WarehouseManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //添加仓库
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 oldName = "防止重名没有作用DEFE32";
                 String sqlLanguage = "INSERT Warehouse VALUES(?,?,?,?,?,?)";
                 String[] psString = getStrings();
@@ -70,6 +74,9 @@ public class WarehouseManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //修改仓库
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 String sqlLanguage = "UPDATE Warehouse SET whNo=?, empNo=?, whTelephone=?, whAddress=?, whArea=?, whRemark=?" +
                         " where whNo = ?";
                 String[] psString = new String[7];
@@ -95,6 +102,9 @@ public class WarehouseManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //删除仓库
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 String sqlLanguage = "DELETE Warehouse where whNo = ?";
                 String[] psString = {oldName};
                 if (psString[0].equals("")) {

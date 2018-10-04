@@ -5,6 +5,8 @@ import Util.OtherFunction;
 import Util.SqlFunction;
 
 import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
@@ -61,10 +63,12 @@ public class Main {
                         登录Button.setText("注销登录");
                         LoginInfo.setIsLogin(true);
                         LoginInfo.setEmpNo(empNo);
-                        ResultSet resultSet = SqlFunction.doSqlSelect("SELECT empName FROM  Employee WHERE empNo = ?",new String[]{empNo},false);
+                        ResultSet resultSet = SqlFunction.doSqlSelect("SELECT empName,deptNo,empAuthority FROM  Employee WHERE empNo = ?",new String[]{empNo},false);
                         try {
                             resultSet.next();
                             LoginInfo.setEmpName(resultSet.getString(1));
+                            LoginInfo.setDept(resultSet.getString(2));
+                            LoginInfo.setEmpAuthority(resultSet.getString(3));
                         } catch (SQLException e1) {
                             e1.printStackTrace();
                         }
@@ -90,6 +94,16 @@ public class Main {
         JMenuItem menuAddPrint = new JMenuItem("加印");
         jMenu.add(menuFirstPrint);
         jMenu.add(menuAddPrint);
+        menuFirstPrint.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!LoginInfo.testAuthority(LoginInfo.getQx图书印刷(),1)){
+                    return;
+                }
+                Frame frame = new BookPrint();
+                frame.showFrame();
+            }
+        });
         jMenuBar.add(jMenu);
         //图书印刷管理
 
@@ -128,6 +142,9 @@ public class Main {
         menuDeptManage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),1)){
+                    return;
+                }
                 Frame frame = new DeptManage();
                 frame.showFrame();
             }
@@ -136,6 +153,9 @@ public class Main {
         menuEmployeeManage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),1)){
+                    return;
+                }
                 Frame frame = new EmployeeManage();
                 frame.showFrame();
             }
@@ -145,6 +165,9 @@ public class Main {
         menuAuthorManage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),1)){
+                    return;
+                }
                 Frame frame = new AuthorManage();
                 frame.showFrame();
             }
@@ -152,6 +175,9 @@ public class Main {
         menuWarehouseManage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),1)){
+                    return;
+                }
                 Frame frame = new WarehouseManage();
                 frame.showFrame();
             }
@@ -159,6 +185,9 @@ public class Main {
         menuBookTypeManage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),1)){
+                    return;
+                }
                 Frame frame = new BookTypeManage();
                 frame.showFrame();
             }
@@ -167,6 +196,9 @@ public class Main {
         menuBookManage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),1)){
+                    return;
+                }
                 Frame frame = new BookManage();
                 frame.showFrame();
             }
@@ -175,6 +207,9 @@ public class Main {
         menuMerchantManage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),1)){
+                    return;
+                }
                 Frame frame = new SellersManage();
                 frame.showFrame();
             }
@@ -205,5 +240,6 @@ public class Main {
         jFrame.setSize(800,500);
         jFrame.setLocation(500,260);
     }
+    
 
 }

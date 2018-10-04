@@ -114,12 +114,6 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
               </hspacer>
-              <hspacer id="25fbe">
-                <constraints>
-                  <grid row="0" column="7" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
-                </constraints>
-              </hspacer>
               <component id="82db4" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
@@ -318,6 +312,15 @@
                   <gridbag weightx="3.0" weighty="1.0" ipadx="100"/>
                 </constraints>
                 <properties/>
+              </component>
+              <component id="b56b0" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="添加新员工若不输入密码，则初始密码为000000。修改员工时，如果不修改密码留空即可"/>
+                </properties>
               </component>
             </children>
           </grid>

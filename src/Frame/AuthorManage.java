@@ -1,9 +1,6 @@
 package Frame;
 
-import Util.FillNumber;
-import Util.OtherFunction;
-import Util.Province;
-import Util.SqlFunction;
+import Util.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -39,6 +36,9 @@ public class AuthorManage extends JFrame implements Frame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 //添加作者
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 oldName = "防止重名没有作用DEFE32";
                 String sqlLanguage = "INSERT Authors VALUES(?,?,?,?,?,?,?,?,?,?,?) ";
                 String[] psString = getStrings();
@@ -103,6 +103,9 @@ public class AuthorManage extends JFrame implements Frame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 //修改作者
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 String sqlLanguage = "UPDATE Authors SET  auNo=?, auName=?, auSex=?, auTitle=?, auTelephone=?, auProvince=?, auCity=?, auZip=?, auAddress=?, " +
                         "auEmail=?, auRemark=? WHERE auNo=?";
                 String[] psString = new String[12];
@@ -128,6 +131,9 @@ public class AuthorManage extends JFrame implements Frame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 //删除管理员
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 String sqlLanguage = "DELETE Authors where auNo = ?";
                 String[] psString = {oldName};
                 if (psString[0].equals("")) {

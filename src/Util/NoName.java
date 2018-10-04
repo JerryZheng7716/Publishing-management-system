@@ -45,13 +45,14 @@ public class NoName {
 
     /**
      * 将编号转换为名称
-     * @param no 编号
+     * @param number 编号
      * @return 名称
      */
-    public String getName(String no){
+    public String getName(String number){
+        number=number.trim();
         for (NoNameItem noNameItem : noName
              ) {
-            if (noNameItem.no.equals(no)){
+            if (noNameItem.no.equals(number)){
                 return noNameItem.name;
             }
         }
@@ -64,6 +65,7 @@ public class NoName {
      * @return 编号
      */
     public String getNo(String name){
+        name=name.trim();
         for (NoNameItem noNameItem : noName
                 ) {
             if (noNameItem.name.equals(name)){

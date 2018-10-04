@@ -100,6 +100,9 @@ public class BookManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //添加
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 oldName = "防止重名没有作用DEFE32";
                 String sqlLanguage = "INSERT Books VALUES(?,?,?,?,?,?,?,?) ";
                 String[] psString = getStrings();
@@ -123,6 +126,9 @@ public class BookManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //修改
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 delType(oldName);
                 delAuthored(oldName);
                 String sqlLanguage = "UPDATE Books SET bkNo=?, bkTitle=?, bkPrice=?, bkWords=?, bkFirstTime=?, bkLastNumber=?, bkPrtQty=?, whNo=? where bkNo = ?";
@@ -144,6 +150,9 @@ public class BookManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //删除
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 delType(oldName);
                 delAuthored(oldName);
                 String sqlLanguage = "DELETE Books where bkNo = ?";

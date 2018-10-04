@@ -1,5 +1,6 @@
 package Frame;
 
+import Util.LoginInfo;
 import Util.OtherFunction;
 import Util.SqlFunction;
 
@@ -50,6 +51,9 @@ public class DeptManage extends JFrame implements Frame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //添加部门
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 oldName = "防止重名没有作用DEFE32";
                 String sqlLanguage = "INSERT Departments VALUES(?,?,?,?,?) ";
                 String[] psString = getStrings();
@@ -70,6 +74,9 @@ public class DeptManage extends JFrame implements Frame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //修改部门
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 String sqlLanguage = "UPDATE Departments SET deptNO = ?,deptTitle = ?,deptManager = ?, deptTelephone = ? ,deptAddress = ? where deptNO = ?";
                 String[] psString = new String[6];
                 String[] ps = getStrings();
@@ -94,7 +101,10 @@ public class DeptManage extends JFrame implements Frame {
         delButton1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //删除管理员
+                //删除
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                    return;
+                }
                 String sqlLanguage = "DELETE Departments where deptNO = ?";
                 String[] psString = {oldName};
                 if (psString[0].equals("")) {

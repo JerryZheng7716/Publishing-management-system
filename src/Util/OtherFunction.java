@@ -55,7 +55,7 @@ public class OtherFunction {
 		resultSet = SqlFunction.doSqlSelect(sqlLanguage, psString, true);
 		try {
 			while (resultSet.next()) {
-				jComboBox1.addItem(resultSet.getString(1));
+				jComboBox1.addItem(resultSet.getString(1).trim());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -112,7 +112,7 @@ public class OtherFunction {
 			}
 			SqlFunction.closeAllLink();
 		}
-		return null;
+		return "Error";
 	}
 }
 
