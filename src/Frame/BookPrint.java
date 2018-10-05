@@ -8,10 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.text.Document;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -34,7 +31,9 @@ public class BookPrint extends JFrame implements Frame {
     private JButton checkButton;
     private JTable table2;
     private JButton cancelButton;
-    private boolean isGod=false;
+    private JComboBox comboBox5;
+    private JComboBox comboBox6;
+    private boolean isGod = false;
     private DateComboBox dateComboBox;
     private String oldName = "防止重名没有作用DEFE32";
 
@@ -53,12 +52,12 @@ public class BookPrint extends JFrame implements Frame {
                 OtherFunction.setComboBoxSelect(comboBox2, timeStrings[1]);
                 OtherFunction.setComboBoxSelect(comboBox3, timeStrings[2]);
                 textField3.setText((String) table1.getValueAt(index, 3));
-                OtherFunction.setComboBoxSelect(comboBox4,(String) table1.getValueAt(index, 4));
+                OtherFunction.setComboBoxSelect(comboBox4, (String) table1.getValueAt(index, 4));
                 textField4.setText((String) table1.getValueAt(index, 5));
                 textField5.setText((String) table1.getValueAt(index, 6));
                 delButton.setEnabled(true);
                 changeButton.setEnabled(true);
-                if (isGod){
+                if (isGod) {
                     checkButton.setEnabled(true);
                     cancelButton.setEnabled(true);
                 }
@@ -78,13 +77,13 @@ public class BookPrint extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //添加
-                if (!LoginInfo.testAuthority(LoginInfo.getQx图书印刷(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx图书印刷(), 2)) {
                     return;
                 }
                 oldName = "防止重名没有作用DEFE32";
                 String sqlLanguage = "INSERT INTO PubPrint(bkNo, prtTime, prtQuantity, prtNumber, prtRemark, prtState) VALUES(?,?,?,?,?,?) ";
                 String[] psString = getStrings();
-                BasicOperation.add(sqlLanguage,psString);
+                BasicOperation.add(sqlLanguage, psString);
                 delButton.setEnabled(false);
                 changeButton.setEnabled(false);
                 checkButton.setEnabled(false);
@@ -97,13 +96,13 @@ public class BookPrint extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //修改
-                if (!LoginInfo.testAuthority(LoginInfo.getQx图书印刷(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx图书印刷(), 2)) {
                     return;
                 }
                 String sqlLanguage = "UPDATE PubPrint SET bkNo = ?, prtTime = ?, prtQuantity = ?, prtNumber = ?, prtRemark = ? ,prtState = ? " +
                         "where prtID = ?";
                 String[] ps = getStrings();
-                BasicOperation.change(sqlLanguage,ps,oldName);
+                BasicOperation.change(sqlLanguage, ps, oldName);
                 delButton.setEnabled(false);
                 changeButton.setEnabled(false);
                 checkButton.setEnabled(false);
@@ -116,11 +115,11 @@ public class BookPrint extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //删除
-                if (!LoginInfo.testAuthority(LoginInfo.getQx图书印刷(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx图书印刷(), 2)) {
                     return;
                 }
                 String sqlLanguage = "DELETE PubPrint where prtID = ?";
-                BasicOperation.del(sqlLanguage,oldName);
+                BasicOperation.del(sqlLanguage, oldName);
                 delButton.setEnabled(false);
                 changeButton.setEnabled(false);
                 checkButton.setEnabled(false);
@@ -132,9 +131,9 @@ public class BookPrint extends JFrame implements Frame {
         checkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String sql ="UPDATE PubPrint set empNo=? WHERE prtID = ?";
-                String[] ps = new String[]{LoginInfo.getEmpNo(),oldName};
-                int x = SqlFunction.doSqlUpdate(sql,ps);
+                String sql = "UPDATE PubPrint set empNo=? WHERE prtID = ?";
+                String[] ps = new String[]{LoginInfo.getEmpNo(), oldName};
+                int x = SqlFunction.doSqlUpdate(sql, ps);
                 if (x > 0) {
                     JOptionPane.showMessageDialog(null, "审核成功");
                 }
@@ -148,9 +147,9 @@ public class BookPrint extends JFrame implements Frame {
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String sql ="UPDATE PubPrint set empNo=null WHERE prtID = ?";
+                String sql = "UPDATE PubPrint set empNo=null WHERE prtID = ?";
                 String[] ps = new String[]{oldName};
-                int x = SqlFunction.doSqlUpdate(sql,ps);
+                int x = SqlFunction.doSqlUpdate(sql, ps);
                 if (x > 0) {
                     JOptionPane.showMessageDialog(null, "撤销审核成功");
                 }
@@ -178,23 +177,35 @@ public class BookPrint extends JFrame implements Frame {
 
             }
         });
+        comboBox5.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                doFilter(comboBox5.getSelectedIndex(), comboBox6.getSelectedIndex());
+            }
+        });
+        comboBox6.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                doFilter(comboBox5.getSelectedIndex(), comboBox6.getSelectedIndex());
+            }
+        });
     }
 
-    private void setLastNumber(){
+    private void setLastNumber() {
         comboBox4.removeAllItems();
         String sql = "SELECT bkLastNumber FROM Books WHERE bkNo=?";
         String[] ps = new String[]{textField2.getText()};
         int lastNumber = 0;
-        ResultSet resultSet = SqlFunction.doSqlSelect(sql,ps,false);
-        try{
-            while (resultSet.next()){
+        ResultSet resultSet = SqlFunction.doSqlSelect(sql, ps, false);
+        try {
+            while (resultSet.next()) {
                 lastNumber = resultSet.getInt(1);
             }
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
         for (int i = 1; i <= lastNumber; i++) {
-            comboBox4.addItem(i+"");
+            comboBox4.addItem(i + "");
         }
     }
 
@@ -206,7 +217,7 @@ public class BookPrint extends JFrame implements Frame {
         this.pack();
         this.setLocation(300, 200);
         this.setVisible(true);
-        dateComboBox=new DateComboBox(comboBox1,comboBox2,comboBox3);
+        dateComboBox = new DateComboBox(comboBox1, comboBox2, comboBox3);
         initTable();
         initText();
         delButton.setEnabled(false);
@@ -214,8 +225,8 @@ public class BookPrint extends JFrame implements Frame {
         String dept = LoginInfo.getDept();
         checkButton.setEnabled(false);
         cancelButton.setEnabled(false);
-        if (LoginInfo.getQx审核().equals("2")){
-            isGod=true;
+        if (LoginInfo.getQx审核().equals("2")) {
+            isGod = true;
         }
     }
 
@@ -223,12 +234,19 @@ public class BookPrint extends JFrame implements Frame {
     public void initText() {
         textField1.setText("自动生成，无需填写");
         textField4.setText("自动生成，无需填写");
+        comboBox5.addItem(("全部"));
+        comboBox5.addItem(("等待印刷"));
+        comboBox5.addItem(("已入库"));
+
+        comboBox6.addItem(("全部"));
+        comboBox6.addItem(("未审核"));
+        comboBox6.addItem(("已审核"));
         dateComboBox.setNow();
     }
 
     @Override
     public void initTable() {
-        final Object[] columnNames = {"流水号","图书编号","送印时间","印刷数量","印刷版次","审核人编号","备注","印刷状态"};
+        final Object[] columnNames = {"流水号", "图书编号", "送印时间", "印刷数量", "印刷版次", "审核人编号", "备注", "印刷状态"};
         Object[][] rowData = {};
         TableColumn column = new TableColumn();
         column.setHeaderValue(columnNames);//
@@ -238,7 +256,7 @@ public class BookPrint extends JFrame implements Frame {
         String sqlLanguage = "SELECT * FROM PubPrint";
         OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
 
-        final Object[] columnNames1 = {"图书编号", "书名","最新版次"};
+        final Object[] columnNames1 = {"图书编号", "书名", "最新版次"};
         Object[][] rowData1 = {};
         TableColumn column1 = new TableColumn();
         column.setHeaderValue(columnNames1);//
@@ -249,32 +267,81 @@ public class BookPrint extends JFrame implements Frame {
         OtherFunction.setTable(sqlLanguage1, new String[]{}, table2);
     }
 
+    /**
+     * 对印刷表进行筛选
+     *
+     * @param add   入库情况 0全部，1等待印刷，2已经入库
+     * @param check 审核情况 0全部，1未审核，2已经审核
+     */
+    private void doFilter(int add, int check) {
+        String sqlLanguage = "SELECT * FROM PubPrint ";
+        String empNo, prtState, where, and;
+        switch (check) {
+            case 0:
+                empNo = "";
+                break;
+            case 2:
+                empNo = "empNo IS NOT NULL ";
+                break;
+            case 1:
+                empNo = "empNo IS NULL ";
+                break;
+            default:
+                empNo = "";
+        }
+        switch (add) {
+            case 0:
+                prtState = "";
+                break;
+            case 2:
+                prtState = "prtState='1'";
+                break;
+            case 1:
+                prtState = "prtState='0'";
+                break;
+            default:
+                prtState = "";
+        }
+        if (!empNo.equals("") && !prtState.equals("")) {
+            and = "AND ";
+        } else {
+            and = "";
+        }
+        if (!empNo.equals("") || !prtState.equals("")) {
+            where = "WHERE ";
+        } else {
+            where = "";
+        }
+        sqlLanguage = sqlLanguage + where + empNo + and + prtState;
+        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
+    }
+
     @Override
     public String[] getStrings() {
-        String bkNo, prtTime, prtQuantity, prtNumber, prtRemark,prtState;
-        bkNo=textField2.getText();
-        prtTime=comboBox1.getSelectedItem()+"-"+comboBox2.getSelectedItem()+"-"+comboBox3.getSelectedItem();
-        prtQuantity=textField3.getText();
-        prtNumber=comboBox4.getSelectedItem()+"";
-        prtRemark=textField5.getText();
+        String bkNo, prtTime, prtQuantity, prtNumber, prtRemark, prtState;
+        bkNo = textField2.getText();
+        prtTime = comboBox1.getSelectedItem() + "-" + comboBox2.getSelectedItem() + "-" + comboBox3.getSelectedItem();
+        prtQuantity = textField3.getText();
+        prtNumber = comboBox4.getSelectedItem() + "";
+        prtRemark = textField5.getText();
         if (bkNo.equals("")) {
             JOptionPane.showMessageDialog(null, "图书编号不能为空!!");
             return null;
         }
-        try{
+        try {
             if (Integer.parseInt(bkNo) >= 100000) {
                 JOptionPane.showMessageDialog(null, "图书编号为5位数字");
                 return null;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "图书编号为5位数字");
         }
         if (prtQuantity.equals("")) {
             JOptionPane.showMessageDialog(null, "印刷数量不能为空!!");
             return null;
         }
-        bkNo=FillNumber.fill(bkNo,5);
-        prtState="0";
-        return new String[]{bkNo, prtTime, prtQuantity, prtNumber, prtRemark,prtState};
+        bkNo = FillNumber.fill(bkNo, 5);
+        prtState = "0";
+        return new String[]{bkNo, prtTime, prtQuantity, prtNumber, prtRemark, prtState};
     }
 }

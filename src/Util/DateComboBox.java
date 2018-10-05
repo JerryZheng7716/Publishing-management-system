@@ -33,7 +33,7 @@ public class DateComboBox {
             }
         });
     }
-    public void initMonthCombobox() {
+    private void initMonthCombobox() {
         if (cbMonth==null){
             return;
         }
@@ -73,7 +73,7 @@ public class DateComboBox {
         }
     }
 
-    public void initYearCombobox(){
+    private void initYearCombobox(){
         if (cbYear==null){
             return;
         }
@@ -84,6 +84,9 @@ public class DateComboBox {
         cbYear.setSelectedIndex(30);
     }
 
+    /**
+     * 将时间选中为当前日期
+     */
     public void setNow() {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-M-d");
@@ -93,6 +96,10 @@ public class DateComboBox {
         OtherFunction.setComboBoxSelect(cbDay,df[2]);
     }
 
+    /**
+     * 选中指定的日期
+     * @param date 日期
+     */
     public void setSelect(String date){
         String[] timeStrings = date.split("-");
         timeStrings[1] = (Integer.parseInt(timeStrings[1])) + "";//转换成int 再转 String 把前面的0去掉

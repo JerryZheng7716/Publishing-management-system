@@ -25,8 +25,7 @@ public class Main {
     private ButtonGroup buttonGroup;
     private boolean isPressModel=true;
     private JMenu jMenu = new JMenu("图书印刷管理");
-    private JMenuItem menuFirstPrint = new JMenuItem("首版书印刷");
-    private JMenuItem menuAddPrint = new JMenuItem("加印");
+    private JMenuItem menuFirstPrint = new JMenuItem("图书印刷管理");
 
     private JMenu jMenu1 = new JMenu("图书库存管理");
     private JMenuItem menuBookAdd = new JMenuItem("图书入库");
@@ -174,7 +173,6 @@ public class Main {
         jFrame.setContentPane(this.panel1);
         jMenuBar.add(jMenu);
         jMenu.add(menuFirstPrint);
-        jMenu.add(menuAddPrint);
         menuFirstPrint.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
