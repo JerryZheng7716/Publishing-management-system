@@ -12,14 +12,14 @@ public class LoginInfo {
     private static String empName = "";
     private static String empAuthority = "0000000";//8位数字，8个权限，0代表没有权限，1代表可读取/查看，2代表可以查看可以操作
     //图书印刷权限，图书库存管理权限，图书销售管理权限，基本信息管理权限，查询统计权限，系统维护权限，权限管理权限,审核权限
-    private static String qx图书印刷 = "0";
-    private static String qx图书库存管理 = "0";
-    private static String qx图书销售管理 = "0";
-    private static String qx基本信息管理 = "0";
-    private static String qx查询统计 = "0";
-    private static String qx系统维护 = "0";
-    private static String qx权限管理 = "0";
-    private static String qx审核 = "0";
+    private static String qx图书印刷 = "2";
+    private static String qx图书库存管理 = "2";
+    private static String qx图书销售管理 = "2";
+    private static String qx基本信息管理 = "2";
+    private static String qx查询统计 = "2";
+    private static String qx系统维护 = "2";
+    private static String qx权限管理 = "2";
+    private static String qx审核 = "2";
 
 
     public static String getEmpAuthority() {

@@ -3,6 +3,9 @@ package Util;
 import javax.swing.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * 用三个JComboBox制作一个万年历
@@ -79,5 +82,23 @@ public class DateComboBox {
             cbYear.addItem(i + "");
         }
         cbYear.setSelectedIndex(30);
+    }
+
+    public void setNow() {
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-M-d");
+        String[] df = dateFormat.format(date).split("-");
+        OtherFunction.setComboBoxSelect(cbYear,df[0]);
+        OtherFunction.setComboBoxSelect(cbMonth,df[1]);
+        OtherFunction.setComboBoxSelect(cbDay,df[2]);
+    }
+
+    public void setSelect(String date){
+        String[] timeStrings = date.split("-");
+        timeStrings[1] = (Integer.parseInt(timeStrings[1])) + "";//转换成int 再转 String 把前面的0去掉
+        timeStrings[2] = (Integer.parseInt(timeStrings[2])) + "";//转换成int 再转 String 把前面的0去掉
+        OtherFunction.setComboBoxSelect(cbYear, timeStrings[0]);
+        OtherFunction.setComboBoxSelect(cbMonth, timeStrings[1]);
+        OtherFunction.setComboBoxSelect(cbDay, timeStrings[2]);
     }
 }

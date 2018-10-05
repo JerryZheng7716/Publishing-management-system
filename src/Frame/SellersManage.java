@@ -62,7 +62,7 @@ public class SellersManage extends JFrame implements Frame {
                     return;
                 }
                 oldName = "防止重名没有作用DEFE32";
-                String sqlLanguage = "INSERT Sellers VALUES(?,?,?,?,?,?,?,?,?,?,?) ";
+                String sqlLanguage = "INSERT Sellers VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ";
                 String[] psString = getStrings();
                 BasicOperation.add(sqlLanguage,psString);
                 delButton.setEnabled(false);
@@ -138,7 +138,7 @@ public class SellersManage extends JFrame implements Frame {
 
     @Override
     public String[] getStrings() {
-        String selNo, selTitle, selName, selTelephone, selProvince, selCity, selZip, selAdress, selEmail, selDeliAdress, selRemark;
+        String selNo, selTitle, selName, selTelephone, selProvince, selCity, selZip, selAdress, selEmail, selDeliAdress, selRemark,selPwd;
         selNo = textField1.getText();
         selTitle = textField2.getText();
         selName = textField3.getText();
@@ -150,6 +150,7 @@ public class SellersManage extends JFrame implements Frame {
         selEmail = textField8.getText();
         selDeliAdress = textField9.getText();
         selRemark = textField10.getText();
+        selPwd="c984aed014aec7623a54f0591da07a85fd4b762d";
         if (selNo.equals("")) {
             JOptionPane.showMessageDialog(null, "类型编号不能为空!!");
             return null;
@@ -187,6 +188,6 @@ public class SellersManage extends JFrame implements Frame {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new String[]{selNo, selTitle, selName, selTelephone, selProvince, selCity, selZip, selAdress, selEmail, selDeliAdress, selRemark};
+        return new String[]{selNo, selTitle, selName, selTelephone, selProvince, selCity, selZip, selAdress, selEmail, selDeliAdress, selRemark,selPwd};
     }
 }

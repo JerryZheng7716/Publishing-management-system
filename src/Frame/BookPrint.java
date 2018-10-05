@@ -88,6 +88,8 @@ public class BookPrint extends JFrame implements Frame {
                 delButton.setEnabled(false);
                 changeButton.setEnabled(false);
                 checkButton.setEnabled(false);
+                cancelButton.setEnabled(false);
+                initText();
                 initTable();
             }
         });
@@ -105,6 +107,8 @@ public class BookPrint extends JFrame implements Frame {
                 delButton.setEnabled(false);
                 changeButton.setEnabled(false);
                 checkButton.setEnabled(false);
+                cancelButton.setEnabled(false);
+                initText();
                 initTable();
             }
         });
@@ -121,6 +125,7 @@ public class BookPrint extends JFrame implements Frame {
                 changeButton.setEnabled(false);
                 checkButton.setEnabled(false);
                 cancelButton.setEnabled(false);
+                initText();
                 initTable();
             }
         });
@@ -201,6 +206,7 @@ public class BookPrint extends JFrame implements Frame {
         this.pack();
         this.setLocation(300, 200);
         this.setVisible(true);
+        dateComboBox=new DateComboBox(comboBox1,comboBox2,comboBox3);
         initTable();
         initText();
         delButton.setEnabled(false);
@@ -215,9 +221,9 @@ public class BookPrint extends JFrame implements Frame {
 
     @Override
     public void initText() {
-        dateComboBox=new DateComboBox(comboBox1,comboBox2,comboBox3);
         textField1.setText("自动生成，无需填写");
         textField4.setText("自动生成，无需填写");
+        dateComboBox.setNow();
     }
 
     @Override
