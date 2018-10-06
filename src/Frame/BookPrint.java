@@ -11,7 +11,6 @@ import javax.swing.text.Document;
 import java.awt.event.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Vector;
 
 public class BookPrint extends JFrame implements Frame {
     private JPanel panel1;
@@ -132,7 +131,7 @@ public class BookPrint extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String sql = "UPDATE PubPrint set empNo=? WHERE prtID = ?";
-                String[] ps = new String[]{LoginInfo.getEmpNo(), oldName};
+                String[] ps = new String[]{LoginInfo.getLoginNo(), oldName};
                 int x = SqlFunction.doSqlUpdate(sql, ps);
                 if (x > 0) {
                     JOptionPane.showMessageDialog(null, "审核成功");
@@ -222,7 +221,7 @@ public class BookPrint extends JFrame implements Frame {
         initText();
         delButton.setEnabled(false);
         changeButton.setEnabled(false);
-        String dept = LoginInfo.getDept();
+        String dept = LoginInfo.getDeptNo();
         checkButton.setEnabled(false);
         cancelButton.setEnabled(false);
         if (LoginInfo.getQx审核().equals("2")) {

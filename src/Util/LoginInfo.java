@@ -7,10 +7,10 @@ import javax.swing.*;
  */
 public class LoginInfo {
     private static boolean isLogin = false;
-    private static String empNo = "";
-    private static String dept = "";
-    private static String empName = "";
-    private static String empAuthority = "0000000";//8位数字，8个权限，0代表没有权限，1代表可读取/查看，2代表可以查看可以操作
+    private static String loginNo = "";
+    private static String deptNo = "";
+    private static String loginName = "";
+    private static String loginAuthority = "0000000";//8位数字，8个权限，0代表没有权限，1代表可读取/查看，2代表可以查看可以操作
     //图书印刷权限，图书库存管理权限，图书销售管理权限，基本信息管理权限，查询统计权限，系统维护权限，权限管理权限,审核权限
     private static String qx图书印刷 = "2";
     private static String qx图书库存管理 = "2";
@@ -22,15 +22,15 @@ public class LoginInfo {
     private static String qx审核 = "2";
 
 
-    public static String getEmpAuthority() {
-        return empAuthority;
+    public static String getLoginAuthority() {
+        return loginAuthority;
     }
 
-    public static void setEmpAuthority(String empAuthority) {
-        LoginInfo.empAuthority = empAuthority;
+    public static void setLoginAuthority(String loginAuthority) {
+        LoginInfo.loginAuthority = loginAuthority;
         String[] s = new String[8];
         for (int i = 0; i < s.length; i++) {
-            s[i] = empAuthority.substring(i, i + 1);
+            s[i] = loginAuthority.substring(i, i + 1);
         }
         qx图书印刷 = s[0];
         qx图书库存管理 = s[1];
@@ -73,12 +73,12 @@ public class LoginInfo {
         return qx权限管理;
     }
 
-    public static String getEmpName() {
-        return empName;
+    public static String getLoginName() {
+        return loginName;
     }
 
-    public static void setEmpName(String empName) {
-        LoginInfo.empName = empName;
+    public static void setLoginName(String loginName) {
+        LoginInfo.loginName = loginName;
     }
 
     public static boolean isIsLogin() {
@@ -89,20 +89,20 @@ public class LoginInfo {
         LoginInfo.isLogin = isLogin;
     }
 
-    public static String getEmpNo() {
-        return empNo;
+    public static String getLoginNo() {
+        return loginNo;
     }
 
-    public static void setEmpNo(String empNo) {
-        LoginInfo.empNo = empNo;
+    public static void setLoginNo(String loginNo) {
+        LoginInfo.loginNo = loginNo;
     }
 
-    public static String getDept() {
-        return dept;
+    public static String getDeptNo() {
+        return deptNo;
     }
 
-    public static void setDept(String dept) {
-        LoginInfo.dept = dept;
+    public static void setDeptNo(String deptNo) {
+        LoginInfo.deptNo = deptNo;
     }
 
     public static boolean testAuthority(String authority, int needLevel) {

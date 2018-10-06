@@ -112,8 +112,8 @@ public class Main {
                     tittle.setText("登录您的账号");
                     登录Button.setText("登录");
                     LoginInfo.setIsLogin(false);
-                    LoginInfo.setEmpNo("");
-                    LoginInfo.setEmpName("");
+                    LoginInfo.setLoginNo("");
+                    LoginInfo.setLoginName("");
                     gonghao.setText("工号");
                     textField1.setText("");
                     textField1.setEnabled(true);
@@ -130,9 +130,10 @@ public class Main {
                         tittle.setText("欢迎您");
                         登录Button.setText("注销登录");
                         LoginInfo.setIsLogin(true);
-                        LoginInfo.setEmpNo(loginID);
+                        LoginInfo.setLoginNo(loginID);
                         String sql;
                         if (isPressModel){
+                            setPressLogin();
                             sql = "SELECT empName,deptNo,empAuthority FROM  Employee WHERE empNo = ?";
                         }else {
                             setSellersLogin();
@@ -143,20 +144,20 @@ public class Main {
                         try {
                             resultSet.next();
                             if (isPressModel){
-                                LoginInfo.setEmpName(resultSet.getString(1));
-                                LoginInfo.setDept(resultSet.getString(2));
-                                LoginInfo.setEmpAuthority(resultSet.getString(3));
+                                LoginInfo.setLoginName(resultSet.getString(1));
+                                LoginInfo.setDeptNo(resultSet.getString(2));
+                                LoginInfo.setLoginAuthority(resultSet.getString(3));
                             }else {
-                                LoginInfo.setEmpName(resultSet.getString(1));
-                                LoginInfo.setDept("商家");
-                                LoginInfo.setEmpAuthority("00200000");
+                                LoginInfo.setLoginName(resultSet.getString(1));
+                                LoginInfo.setDeptNo("商家");
+                                LoginInfo.setLoginAuthority("00200000");
                             }
 
                         } catch (SQLException e1) {
                             e1.printStackTrace();
                         }
                         gonghao.setText("用户名");
-                        textField1.setText(LoginInfo.getEmpName());
+                        textField1.setText(LoginInfo.getLoginName());
                         textField1.setEnabled(false);
                         passwordField1.setVisible(false);
                         passwordField1.setEnabled(false);
@@ -202,6 +203,17 @@ public class Main {
         //图书库存管理
 
         jMenu2.add(menuOrder);
+        menuOrder.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!LoginInfo.testAuthority(LoginInfo.getQx图书销售管理(),1)){
+                    return;
+                }
+                Frame frame = new Order();
+                frame.showFrame();
+            }
+
+        });
         jMenu2.add(menuShip);
         jMenuBar.add(jMenu2);
         //图书销售管理
@@ -330,5 +342,13 @@ public class Main {
         jMenu4.setVisible(false);
         jMenu5.setVisible(false);
         menuShip.setVisible(false);
+    }
+    private void setPressLogin(){
+        jMenu.setVisible(true);
+        jMenu1.setVisible(true);
+        jMenu3.setVisible(true);
+        jMenu4.setVisible(true);
+        jMenu5.setVisible(true);
+        menuShip.setVisible(true);
     }
 }

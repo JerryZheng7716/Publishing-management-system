@@ -153,10 +153,20 @@ public class BookManage extends JFrame implements Frame {
                 if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
                     return;
                 }
-                delType(oldName);
-                delAuthored(oldName);
-                String sqlLanguage = "DELETE Books where bkNo = ?";
-                BasicOperation.del(sqlLanguage,oldName);
+                String[] psString = {oldName};
+                if (psString[0].equals("")) {
+                    return;
+                }
+                int res = JOptionPane.showConfirmDialog(null, "是否删除”" + oldName + "“的信息", "是否修改", JOptionPane.YES_NO_OPTION);
+                if (res == JOptionPane.YES_OPTION) {
+                    delType(oldName);
+                    delAuthored(oldName);
+                    String sqlLanguage = "DELETE Books where bkNo = ?";
+                    int x = SqlFunction.doSqlUpdate(sqlLanguage, psString);
+                    if (x > 0) {
+                        JOptionPane.showMessageDialog(null, "删除成功");
+                    }
+                }
                 delButton.setEnabled(false);
                 changeButton.setEnabled(false);
                 initTable();

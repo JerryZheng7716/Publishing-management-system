@@ -44,8 +44,8 @@ public class InitPwd extends JFrame implements Frame  {
 
     @Override
     public void initText() {
-        textField1.setText(LoginInfo.getEmpNo());
-        textField2.setText(LoginInfo.getEmpName());
+        textField1.setText(LoginInfo.getLoginNo());
+        textField2.setText(LoginInfo.getLoginName());
     }
 
     @Override
@@ -56,7 +56,7 @@ public class InitPwd extends JFrame implements Frame  {
     @Override
     public String[] getStrings() {
         String id,pwd;
-        id=LoginInfo.getEmpNo();
+        id=LoginInfo.getLoginNo();
         pwd=new String(passwordField1.getPassword());
         pwd=SHA1.encode(pwd);
         return new String[]{pwd,id};

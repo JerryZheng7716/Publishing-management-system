@@ -3,21 +3,15 @@ package Frame;
 import Util.*;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
-import javax.swing.text.Document;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class BookAdd extends JFrame implements Frame {
     private JPanel panel1;
@@ -242,7 +236,7 @@ public class BookAdd extends JFrame implements Frame {
         ioType="1";
         ioTime=comboBox3.getSelectedItem()+"-"+comboBox4.getSelectedItem()+"-"+comboBox5.getSelectedItem();
         ioQuantity=textField2.getText();
-        empNo=LoginInfo.getEmpNo();
+        empNo=LoginInfo.getLoginNo();
         prtRemark=textField4.getText();
         if (ioQuantity.equals("")) {
             JOptionPane.showMessageDialog(null, "入库数量不能为空!!");

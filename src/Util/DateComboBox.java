@@ -108,4 +108,8 @@ public class DateComboBox {
         OtherFunction.setComboBoxSelect(cbMonth, timeStrings[1]);
         OtherFunction.setComboBoxSelect(cbDay, timeStrings[2]);
     }
+
+    public String getDate(){
+        return cbYear.getSelectedItem()+"-"+cbMonth.getSelectedItem()+"-"+cbDay.getSelectedItem();
+    }
 }
