@@ -49,6 +49,9 @@ public class SellersAuthorityManage extends JFrame implements Frame {
         initPwdButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!LoginInfo.testAuthority(LoginInfo.getQx权限管理(),2)){
+                    return;
+                }
                 String sql = "UPDATE Sellers SET selPwd=? where selNo = ?";
                 String[] ps = getStrings();
                 SqlFunction.doSqlUpdate(sql, ps);

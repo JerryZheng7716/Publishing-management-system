@@ -35,6 +35,7 @@ public class BookOut extends JFrame implements Frame {
     private JButton changeButton;
     private JButton delButton;
     private JTextField textField4;
+    private JTextPane textPane1;
     private String oldName = "防止重名没有作用DEFE32";
     private String ordId = "防止重名没有作用DEFE32";
     private ButtonGroup buttonGroup;
@@ -49,6 +50,25 @@ public class BookOut extends JFrame implements Frame {
                     dateComboBox.setNow();
                     textField2.setText((String) table1.getValueAt(index, 5));
                     ordId = (String) table1.getValueAt(index, 0);
+
+                    String sql1 = "SELECT bkNo,odQuantity FROM OrderDetails WHERE ordNo = ?";
+                    String[] ps1 = new String[]{ordId};
+                    ResultSet resultSet1 = SqlFunction.doSqlSelect(sql1,ps1,false);
+                    String bookDetails = "";
+                    int count = 0;
+                    try{
+                        while (resultSet1.next()){
+                            if (count%2==0 && count!=0){
+                                bookDetails = bookDetails+"\n";
+                            }
+                            bookDetails = bookDetails+"图书编号："+resultSet1.getString(1)+"; ";
+                            bookDetails = bookDetails+"订购数量："+resultSet1.getString(2)+";     ";
+                            count++;
+                        }
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
+                    textPane1.setText(bookDetails);
                 }
                 super.mousePressed(e);
             }
@@ -69,6 +89,7 @@ public class BookOut extends JFrame implements Frame {
                     changeButton.setEnabled(true);
                 }
                 oldName = textField1.getText();
+                textPane1.setText("");
                 super.mousePressed(e);
             }
         });

@@ -61,12 +61,13 @@ public class BookManage extends JFrame implements Frame {
                 textField7.setText("");
                 try{
                     while (resultSet.next()){
-                        String s= resultSet.getString(1);
-                        String type = noNameType.getName(resultSet.getString(1));
-                        if (textField7.getText().equals("")){
-                            textField7.setText(type);
-                        }else {
-                            textField7.setText(textField7.getText()+";"+type);
+                        if (resultSet.getString(1)!=null){
+                            String type = noNameType.getName(resultSet.getString(1));
+                            if (textField7.getText().equals("")){
+                                textField7.setText(type);
+                            }else {
+                                textField7.setText(textField7.getText()+";"+type);
+                            }
                         }
                     }
                 } catch (SQLException e1) {

@@ -1,5 +1,6 @@
 package Util;
 
+import javax.swing.*;
 import java.lang.reflect.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,10 +18,19 @@ public class NoName {
     private String nameCol;
     private String tableName;
     private SqlFunction sqlFunction = new SqlFunction();
+    private boolean haveAll = false;
     public NoName(String noCol,String nameCol,String tableName){
         this.nameCol=nameCol;
         this.noCol=noCol;
         this.tableName=tableName;
+        reset();
+    }
+
+    public NoName(String noCol,String nameCol,String tableName,boolean haveAll){
+        this.nameCol=nameCol;
+        this.noCol=noCol;
+        this.tableName=tableName;
+        this.haveAll=haveAll;
         reset();
     }
 
@@ -29,6 +39,12 @@ public class NoName {
      */
     public void reset(){
         noName.clear();
+        if (haveAll){
+            NoNameItem noNameItem1 = new NoNameItem();
+            noNameItem1.no="全部";
+            noNameItem1.name="全部";
+            noName.add(noNameItem1);
+        }
         String sql="SELECT "+noCol+", "+nameCol+" FROM "+tableName;
         ResultSet resultSet = sqlFunction.doSqlSelect(sql,new String[]{},false);
         try {
@@ -99,6 +115,13 @@ public class NoName {
             name.add(n.name);
         }
         return  name;
+    }
+
+    public void setNameComBoBox(JComboBox comBoBox){
+        for (NoNameItem item: noName
+             ) {
+            comBoBox.addItem(item.name);
+        }
     }
 
     class NoNameItem{

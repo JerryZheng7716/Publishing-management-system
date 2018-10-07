@@ -104,6 +104,7 @@ public class Order extends JFrame implements Frame {
                 delButton.setEnabled(true);
                 changeButton.setEnabled(true);
                 oldName = textField1.getText();
+
                 super.mousePressed(e);
             }
         });
