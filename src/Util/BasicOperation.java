@@ -15,14 +15,15 @@ public class BasicOperation {
      * @param sqlLanguage 数据库语句
      * @param psString    需要增加的数据
      */
-    public static void add(String sqlLanguage, String[] psString) {
+    public static boolean add(String sqlLanguage, String[] psString) {
         if (psString == null) {
-            return;
+            return false;
         }
         int x = SqlFunction.doSqlUpdate(sqlLanguage, psString);
         if (x > 0) {
             JOptionPane.showMessageDialog(null, "操作成功");
         }
+        return true;
     }
 
     /**
@@ -32,24 +33,25 @@ public class BasicOperation {
      * @param ps          需要增加的数据
      * @param oldName     需要修改的记录的原主键值
      */
-    public static void change(String sqlLanguage, String[] ps, String oldName) {
+    public static boolean change(String sqlLanguage, String[] ps, String oldName) {
         int count = appearNumber(sqlLanguage);
         String[] psString = new String[count];
         if (ps == null) {
-            return;
+            return false;
         }
         int res = JOptionPane.showConfirmDialog(null, "是否修改记录”" + oldName + "“的信息", "是否修改", JOptionPane.YES_NO_OPTION);
         if (res == JOptionPane.YES_OPTION) {
             System.arraycopy(ps, 0, psString, 0, count - 1);
             psString[count - 1] = oldName;
             if (psString[0].equals("")) {
-                return;
+                return false;
             }
             int x = SqlFunction.doSqlUpdate(sqlLanguage, psString);
             if (x > 0) {
                 JOptionPane.showMessageDialog(null, "修改成功");
             }
         }
+        return true;
     }
 
     /**
@@ -58,10 +60,10 @@ public class BasicOperation {
      * @param sqlLanguage 数据库语句
      * @param oldName     需要删除的记录的原主键值
      */
-    public static void del(String sqlLanguage, String oldName) {
+    public static boolean del(String sqlLanguage, String oldName) {
         String[] psString = {oldName};
         if (psString[0].equals("")) {
-            return;
+            return false;
         }
         int res = JOptionPane.showConfirmDialog(null, "是否删除”" + oldName + "“的信息", "是否修改", JOptionPane.YES_NO_OPTION);
         if (res == JOptionPane.YES_OPTION) {
@@ -70,6 +72,7 @@ public class BasicOperation {
                 JOptionPane.showMessageDialog(null, "删除成功");
             }
         }
+        return true;
     }
 
     /**

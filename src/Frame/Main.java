@@ -198,6 +198,16 @@ public class Main {
                 frame.showFrame();
             }
         });
+        menuBookOut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!LoginInfo.testAuthority(LoginInfo.getQx图书库存管理(),1)){
+                    return;
+                }
+                Frame frame = new BookOut();
+                frame.showFrame();
+            }
+        });
         jMenuBar.add(jMenu);
         jMenuBar.add(jMenu1);
         //图书库存管理
