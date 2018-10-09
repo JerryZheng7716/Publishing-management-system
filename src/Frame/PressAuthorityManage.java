@@ -1,8 +1,7 @@
 package Frame;
 
 import Util.LoginInfo;
-import Util.NoName;
-import Util.OtherFunction;
+import Util.ControlFunction;
 import Util.SqlFunction;
 
 import javax.swing.*;
@@ -61,7 +60,7 @@ public class PressAuthorityManage extends JFrame implements Frame {
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!LoginInfo.testAuthority(LoginInfo.getQx权限管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx权限管理(), 2)) {
                     return;
                 }
                 String sql = "UPDATE Employee SET empAuthority = ? WHERE empNo = ?";
@@ -155,7 +154,7 @@ public class PressAuthorityManage extends JFrame implements Frame {
         TableModel dataModel = new DefaultTableModel(rowData, columnNames);
         table1.setModel(dataModel);
         String sqlLanguage = "SELECT empNo,empName,empSex,empTelephone,empEmail,deptNo,empAuthority FROM Employee";
-        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
+        ControlFunction.setTable(sqlLanguage, new String[]{}, table1);
     }
 
     @Override
@@ -168,6 +167,13 @@ public class PressAuthorityManage extends JFrame implements Frame {
         return new String[]{loginAuthority, textFieldId.getText()};
     }
 
+    /**
+     * 将选择的按钮，翻译成012三种值
+     *
+     * @param none 没有权限按钮
+     * @param god  完全控制按钮
+     * @return 应该是对应哪一种权限的值
+     */
     private String getRbSelect(JRadioButton none, JRadioButton god) {
         if (none.isSelected()) {//如果不具备权限被选中返回0
             return "0";
@@ -178,6 +184,11 @@ public class PressAuthorityManage extends JFrame implements Frame {
         }
     }
 
+    /**
+     * 将8位权限值，设置到8组权限单选框中
+     *
+     * @param authority 权限值
+     */
     private void setRbSelect(String authority) {
         String[] s = new String[8];
         for (int i = 0; i < s.length; i++) {
@@ -248,10 +259,16 @@ public class PressAuthorityManage extends JFrame implements Frame {
 
     }
 
+    /**
+     * 选中所有无权限单选框
+     */
     private void setCivilian() {
         setGodOrCivilian(printRB0, inventoryRB0, sellRB0, infoRB0, searchRB0, sysRB0, permissionRB0, checkRB0);
     }
 
+    /**
+     * 选中所有完全控制单选框
+     */
     private void setBigGod() {
         setGodOrCivilian(printRB2, inventoryRB2, sellRB2, infoRB2, searchRB2, sysRB2, permissionRB2, checkRB2);
     }

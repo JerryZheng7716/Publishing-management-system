@@ -8,20 +8,21 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class InitPwd extends JFrame implements Frame  {
+public class InitPwd extends JFrame implements Frame {
     private JPanel panel1;
     private JTextField textField1;
     private JTextField textField2;
     private JPasswordField passwordField1;
     private JButton 重置密码Button;
+
     public InitPwd(boolean isPress) {
         重置密码Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String sql;
-                if (isPress){
+                if (isPress) {
                     sql = "UPDATE Employee SET empPwd=? where empNo = ?";
-                }else {
+                } else {
                     sql = "UPDATE Sellers SET selPwd=? where selNo = ?";
                 }
                 String[] ps = getStrings();
@@ -55,10 +56,10 @@ public class InitPwd extends JFrame implements Frame  {
 
     @Override
     public String[] getStrings() {
-        String id,pwd;
-        id=LoginInfo.getLoginNo();
-        pwd=new String(passwordField1.getPassword());
-        pwd=SHA1.encode(pwd);
-        return new String[]{pwd,id};
+        String id, pwd;
+        id = LoginInfo.getLoginNo();
+        pwd = new String(passwordField1.getPassword());
+        pwd = SHA1.encode(pwd);
+        return new String[]{pwd, id};
     }
 }

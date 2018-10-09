@@ -91,9 +91,9 @@ public class DateComboBox {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-M-d");
         String[] df = dateFormat.format(date).split("-");
-        OtherFunction.setComboBoxSelect(cbYear,df[0]);
-        OtherFunction.setComboBoxSelect(cbMonth,df[1]);
-        OtherFunction.setComboBoxSelect(cbDay,df[2]);
+        ControlFunction.setComboBoxSelect(cbYear,df[0]);
+        ControlFunction.setComboBoxSelect(cbMonth,df[1]);
+        ControlFunction.setComboBoxSelect(cbDay,df[2]);
     }
 
     /**
@@ -104,9 +104,9 @@ public class DateComboBox {
         String[] timeStrings = date.split("-");
         timeStrings[1] = (Integer.parseInt(timeStrings[1])) + "";//转换成int 再转 String 把前面的0去掉
         timeStrings[2] = (Integer.parseInt(timeStrings[2])) + "";//转换成int 再转 String 把前面的0去掉
-        OtherFunction.setComboBoxSelect(cbYear, timeStrings[0]);
-        OtherFunction.setComboBoxSelect(cbMonth, timeStrings[1]);
-        OtherFunction.setComboBoxSelect(cbDay, timeStrings[2]);
+        ControlFunction.setComboBoxSelect(cbYear, timeStrings[0]);
+        ControlFunction.setComboBoxSelect(cbMonth, timeStrings[1]);
+        ControlFunction.setComboBoxSelect(cbDay, timeStrings[2]);
     }
 
     public String getDate(){

@@ -47,11 +47,11 @@ public class BookPrint extends JFrame implements Frame {
                         .split("-");
                 timeStrings[1] = (Integer.parseInt(timeStrings[1])) + "";//转换成int 再转 String 把前面的0去掉
                 timeStrings[2] = (Integer.parseInt(timeStrings[2])) + "";//转换成int 再转 String 把前面的0去掉
-                OtherFunction.setComboBoxSelect(comboBox1, timeStrings[0]);
-                OtherFunction.setComboBoxSelect(comboBox2, timeStrings[1]);
-                OtherFunction.setComboBoxSelect(comboBox3, timeStrings[2]);
+                ControlFunction.setComboBoxSelect(comboBox1, timeStrings[0]);
+                ControlFunction.setComboBoxSelect(comboBox2, timeStrings[1]);
+                ControlFunction.setComboBoxSelect(comboBox3, timeStrings[2]);
                 textField3.setText((String) table1.getValueAt(index, 3));
-                OtherFunction.setComboBoxSelect(comboBox4, (String) table1.getValueAt(index, 4));
+                ControlFunction.setComboBoxSelect(comboBox4, (String) table1.getValueAt(index, 4));
                 textField4.setText((String) table1.getValueAt(index, 5));
                 textField5.setText((String) table1.getValueAt(index, 6));
                 delButton.setEnabled(true);
@@ -190,6 +190,9 @@ public class BookPrint extends JFrame implements Frame {
         });
     }
 
+    /**
+     * 设置最新版次下拉框的内容
+     */
     private void setLastNumber() {
         comboBox4.removeAllItems();
         String sql = "SELECT bkLastNumber FROM Books WHERE bkNo=?";
@@ -253,7 +256,7 @@ public class BookPrint extends JFrame implements Frame {
         TableModel dataModel = new DefaultTableModel(rowData, columnNames);
         table1.setModel(dataModel);
         String sqlLanguage = "SELECT * FROM PubPrint";
-        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
+        ControlFunction.setTable(sqlLanguage, new String[]{}, table1);
 
         final Object[] columnNames1 = {"图书编号", "书名", "最新版次"};
         Object[][] rowData1 = {};
@@ -263,7 +266,7 @@ public class BookPrint extends JFrame implements Frame {
         TableModel dataModel1 = new DefaultTableModel(rowData1, columnNames1);
         table2.setModel(dataModel1);
         String sqlLanguage1 = "SELECT bkNo,bkTitle,bkLastNumber FROM Books";
-        OtherFunction.setTable(sqlLanguage1, new String[]{}, table2);
+        ControlFunction.setTable(sqlLanguage1, new String[]{}, table2);
     }
 
     /**
@@ -312,7 +315,7 @@ public class BookPrint extends JFrame implements Frame {
             where = "";
         }
         sqlLanguage = sqlLanguage + where + empNo + and + prtState;
-        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
+        ControlFunction.setTable(sqlLanguage, new String[]{}, table1);
     }
 
     @Override

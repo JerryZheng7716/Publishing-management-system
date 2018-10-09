@@ -2,7 +2,7 @@ package Frame;
 
 import Util.BookDetail;
 import Util.GBC;
-import Util.OtherFunction;
+import Util.ControlFunction;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -22,7 +22,7 @@ public class BookDetails extends JFrame {
     private ArrayList<BookItem> itemArrayList;
     private JTextField focusTextField;
 
-    public BookDetails(){
+    public BookDetails() {
         itemArrayList = new ArrayList<>();
         addItem();
         JFrame jFrame = this;
@@ -31,21 +31,22 @@ public class BookDetails extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 BookDetail bookDetail = new BookDetail();
                 BookDetail.clearAllBook();
-                for (BookItem item :itemArrayList) {
-                    if (!item.getBookid().equals("")){
+                for (BookItem item : itemArrayList) {
+                    if (!item.getBookid().equals("")) {
                         try {
                             Integer.parseInt(item.getBookQuantity());
-                        }catch (Exception e1){
+                        } catch (Exception e1) {
                             JOptionPane.showMessageDialog(null, "您的订单数量填写有误，请填写有效数字");
                             return;
                         }
-                        bookDetail.addBook(item.getBookid(),item.getBookQuantity());
+                        bookDetail.addBook(item.getBookid(), item.getBookQuantity());
                     }
                 }
                 jFrame.dispose();
             }
         });
     }
+
     public void showFrame() {
         this.setContentPane(this.panel1);
         this.setTitle("购书详单");
@@ -54,8 +55,8 @@ public class BookDetails extends JFrame {
         this.setLocation(300, 200);
         this.setVisible(true);
         initTable();
-        ArrayList<BookDetail.Book> bookArrayList= BookDetail.getAllBook();
-        if (bookArrayList.size()!=0){
+        ArrayList<BookDetail.Book> bookArrayList = BookDetail.getAllBook();
+        if (bookArrayList.size() != 0) {
             itemArrayList.get(0).idTextField.setText(bookArrayList.get(0).getBookID());
             itemArrayList.get(0).quantityTextField.setText(bookArrayList.get(0).getQuantity());
         }
@@ -67,8 +68,8 @@ public class BookDetails extends JFrame {
 
     }
 
-    private void initTable(){
-        final Object[] columnNames = {"图书编号","书名","单价","字数","首版时间","最新版次","当前量"};
+    private void initTable() {
+        final Object[] columnNames = {"图书编号", "书名", "单价", "字数", "首版时间", "最新版次", "当前量"};
         Object[][] rowData = {};
         TableColumn column = new TableColumn();
         column.setHeaderValue(columnNames);//
@@ -76,15 +77,15 @@ public class BookDetails extends JFrame {
         TableModel dataModel = new DefaultTableModel(rowData, columnNames);
         table1.setModel(dataModel);
         String sqlLanguage = "SELECT * FROM Books";
-        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
+        ControlFunction.setTable(sqlLanguage, new String[]{}, table1);
 
         table1.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 int index = table1.getSelectedRow();
-                if (focusTextField==null){//如果用户从未点击输入框，那么将字段写入第一个输入框
+                if (focusTextField == null) {//如果用户从未点击输入框，那么将字段写入第一个输入框
                     itemArrayList.get(0).idTextField.setText((String) table1.getValueAt(index, 0));
-                }else{
+                } else {
                     focusTextField.setText((String) table1.getValueAt(index, 0));
                 }
                 super.mousePressed(e);
@@ -92,15 +93,15 @@ public class BookDetails extends JFrame {
         });
     }
 
-    private void addItem(){
+    private void addItem() {
         BookItem bookItem = new BookItem();
         bookItem.remove.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("点击了减少"+itemArrayList.size());
+                System.out.println("点击了减少" + itemArrayList.size());
                 detailPanel.remove(bookItem.jPanel);
                 itemArrayList.remove(bookItem);
-                BookItem bookItemLast = itemArrayList.get(itemArrayList.size()-1);
+                BookItem bookItemLast = itemArrayList.get(itemArrayList.size() - 1);
                 bookItemLast.add.setVisible(true);
                 bookItemLast.jPanel.remove(bookItemLast.nonePanel1);
                 detailPanel.revalidate();
@@ -108,12 +109,12 @@ public class BookDetails extends JFrame {
                 super.mouseClicked(e);
             }
         });
-        detailPanel.add(bookItem.jPanel,  new GBC(0,itemArrayList.size()*4,3,3).
+        detailPanel.add(bookItem.jPanel, new GBC(0, itemArrayList.size() * 4, 3, 3).
                 setFill(GBC.BOTH).setIpad(0, 0).setWeight(0, 0));
         itemArrayList.add(bookItem);
-        for (int i = 0; i < itemArrayList.size()-1; i++) {
+        for (int i = 0; i < itemArrayList.size() - 1; i++) {
             itemArrayList.get(i).add.setVisible(false);
-            BookItem item=itemArrayList.get(i);
+            BookItem item = itemArrayList.get(i);
             item.jPanel.add(item.nonePanel1);
         }
         BookItem item = itemArrayList.get(0);
@@ -133,10 +134,10 @@ public class BookDetails extends JFrame {
         private BookItem() {
             JPanel none = new JPanel();
             JPanel none2 = new JPanel();
-            none.setSize(3,1);
-            none2.setSize(1,1);
-            nonePanel1.setSize(1,1);
-            nonePanel2.setSize(1,1);
+            none.setSize(3, 1);
+            none2.setSize(1, 1);
+            nonePanel1.setSize(1, 1);
+            nonePanel2.setSize(1, 1);
 
             idLabel = new JLabel("图书编号");
             quantityLabel = new JLabel("订购数量");
@@ -172,11 +173,11 @@ public class BookDetails extends JFrame {
             });
         }
 
-        private String getBookid(){
+        private String getBookid() {
             return idTextField.getText();
         }
 
-        private String getBookQuantity(){
+        private String getBookQuantity() {
             return quantityTextField.getText();
         }
     }

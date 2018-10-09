@@ -1,7 +1,6 @@
 package Frame;
 
 import Util.LoginInfo;
-import Util.OtherFunction;
 import Util.SqlFunction;
 
 import javax.swing.*;
@@ -47,6 +46,7 @@ public class Main {
     private JMenu jMenu4 = new JMenu("查询统计");
     private JMenuItem menuInventoryInquiry = new JMenuItem("库存查询统计");
     private JMenuItem menuSalesInquiry = new JMenuItem("销售查询统计");
+    private JMenuItem menuOutStock = new JMenuItem("缺货记录管理");
 
     private JMenu jMenu5 = new JMenu("系统维护");
     private JMenuItem menuUserManage = new JMenuItem("用户管理");
@@ -99,6 +99,9 @@ public class Main {
         isPressModel = pressRadioButton.isSelected();
     }
 
+    /**
+     * 对登录按钮添加方法
+     */
     private void initLogin() {
         登录Button.addActionListener(new ActionListener() {
             @Override
@@ -124,7 +127,7 @@ public class Main {
                     密码Label.setVisible(true);
                     jMenuBar.setVisible(false);
                 } else {
-                    if (OtherFunction.Login(loginID, loginPwd, isPressModel).equals("Success")) {
+                    if (LoginInfo.Login(loginID, loginPwd, isPressModel).equals("Success")) {
                         sellersRadioButton.setEnabled(false);
                         pressRadioButton.setEnabled(false);
                         initPwd.setVisible(true);
@@ -328,17 +331,28 @@ public class Main {
         //基本信息管理
 
         jMenu4.add(menuInventoryInquiry);
+        jMenu4.add(menuSalesInquiry);
+        jMenu4.add(menuOutStock);
         menuInventoryInquiry.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(), 1)) {
+                if (!LoginInfo.testAuthority(LoginInfo.getQx查询统计(), 1)) {
                     return;
                 }
                 Frame frame = new InventoryInquiry();
                 frame.showFrame();
             }
         });
-        jMenu4.add(menuSalesInquiry);
+        menuOutStock.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!LoginInfo.testAuthority(LoginInfo.getQx查询统计(), 1)) {
+                    return;
+                }
+                Frame frame = new OutStock();
+                frame.showFrame();
+            }
+        });
         jMenuBar.add(jMenu4);
         //查询统计
 
@@ -377,6 +391,9 @@ public class Main {
         jFrame.setLocation(500, 260);
     }
 
+    /**
+     * 设置为商家登录模式
+     */
     private void setSellersLogin() {
         jMenu.setVisible(false);
         jMenu1.setVisible(false);
@@ -386,6 +403,9 @@ public class Main {
         menuShip.setVisible(false);
     }
 
+    /**
+     * 设置为出版社工作人员登录模式
+     */
     private void setPressLogin() {
         jMenu.setVisible(true);
         jMenu1.setVisible(true);

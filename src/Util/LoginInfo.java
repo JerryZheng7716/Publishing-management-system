@@ -1,6 +1,8 @@
 package Util;
 
 import javax.swing.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * 保存登录信息
@@ -12,14 +14,14 @@ public class LoginInfo {
     private static String loginName = "";
     private static String loginAuthority = "0000000";//8位数字，8个权限，0代表没有权限，1代表可读取/查看，2代表可以查看可以操作
     //图书印刷权限，图书库存管理权限，图书销售管理权限，基本信息管理权限，查询统计权限，系统维护权限，权限管理权限,审核权限
-    private static String qx图书印刷 = "2";
-    private static String qx图书库存管理 = "2";
-    private static String qx图书销售管理 = "2";
-    private static String qx基本信息管理 = "2";
-    private static String qx查询统计 = "2";
-    private static String qx系统维护 = "2";
-    private static String qx权限管理 = "2";
-    private static String qx审核 = "2";
+    private static String qx图书印刷 = "0";
+    private static String qx图书库存管理 = "0";
+    private static String qx图书销售管理 = "0";
+    private static String qx基本信息管理 = "0";
+    private static String qx查询统计 = "0";
+    private static String qx系统维护 = "0";
+    private static String qx权限管理 = "0";
+    private static String qx审核 = "0";
 
 
     public static String getLoginAuthority() {
@@ -120,4 +122,50 @@ public class LoginInfo {
         }
     }
 
+    /**
+     * 执行登录操作
+     * @param AdminName 用户名
+     * @param AdminPassWord 密码
+     * @return 登录结果
+     */
+    public static String Login(String AdminName,String AdminPassWord,boolean isPressModel){
+        if (StringUtil.isEmpty(AdminName) || StringUtil.isEmpty(AdminPassWord)) {
+            JOptionPane.showMessageDialog(null, "工号或密码不能为空！");
+            return "CanNotNull";
+        } else {
+            AdminPassWord=SHA1.encode(AdminPassWord);
+            String sqlLanguage;
+            if (isPressModel){
+                sqlLanguage = "SELECT * FROM Employee WHERE empNo=? and empPwd=?";
+            }else {
+                sqlLanguage = "SELECT * FROM Sellers WHERE selNo=? and selPwd=?";
+            }
+
+            String[] psString = { AdminName, AdminPassWord };
+            ResultSet resultSet=null;
+            resultSet=SqlFunction.doSqlSelect(sqlLanguage,psString,false);
+            try {
+                if (resultSet.next()) {
+                    return "Success";
+                } else {
+                    if (isPressModel){
+                        sqlLanguage = "SELECT * FROM Employee WHERE empNo = ?";
+                    }else {
+                        sqlLanguage = "SELECT * FROM Sellers WHERE selNo = ?";
+                    }
+                    psString = new String[]{ AdminName};
+                    if (SqlFunction.doSqlSelect(sqlLanguage,psString,false).next()) {
+                        JOptionPane.showMessageDialog(null,"密码错误！");
+                        return "passwordError";
+                    }
+                    JOptionPane.showMessageDialog(null,"不存在当前工号！");
+                    return "NoneAccount";
+                }
+            }  catch (SQLException e) {
+                e.printStackTrace();
+            }
+            SqlFunction.closeAllLink();
+        }
+        return "Error";
+    }
 }

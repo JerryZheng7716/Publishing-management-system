@@ -41,13 +41,13 @@ public class BookTypeManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //添加
-                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(), 2)) {
                     return;
                 }
                 oldName = "防止重名没有作用DEFE32";
                 String sqlLanguage = "INSERT Types VALUES(?,?,?) ";
                 String[] psString = getStrings();
-                BasicOperation.add(sqlLanguage,psString);
+                BasicOperation.add(sqlLanguage, psString);
                 delButton.setEnabled(false);
                 changeButton.setEnabled(false);
                 initTable();
@@ -57,12 +57,12 @@ public class BookTypeManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //修改
-                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(), 2)) {
                     return;
                 }
                 String sqlLanguage = "UPDATE Types SET typeNo=?, typeTitle=?, typeRemark=? where typeNo = ?";
                 String[] ps = getStrings();
-                BasicOperation.change(sqlLanguage,ps,oldName);
+                BasicOperation.change(sqlLanguage, ps, oldName);
                 delButton.setEnabled(false);
                 changeButton.setEnabled(false);
                 initTable();
@@ -72,11 +72,11 @@ public class BookTypeManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //删除
-                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(), 2)) {
                     return;
                 }
                 String sqlLanguage = "DELETE Types where typeNo = ?";
-                BasicOperation.del(sqlLanguage,oldName);
+                BasicOperation.del(sqlLanguage, oldName);
                 delButton.setEnabled(false);
                 changeButton.setEnabled(false);
                 initTable();
@@ -114,7 +114,7 @@ public class BookTypeManage extends JFrame implements Frame {
         table1.setModel(dataModel);
 
         String sqlLanguage = "SELECT * FROM Types";
-        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
+        ControlFunction.setTable(sqlLanguage, new String[]{}, table1);
     }
 
     @Override
@@ -127,15 +127,15 @@ public class BookTypeManage extends JFrame implements Frame {
             JOptionPane.showMessageDialog(null, "类型编号不能为空!!");
             return null;
         }
-        try{
+        try {
             if (Integer.parseInt(typeNo) >= 100) {
                 JOptionPane.showMessageDialog(null, "类型编号为2位数字");
                 return null;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "类型编号为2位数字");
         }
-        typeNo=FillNumber.fill(typeNo,2);
+        typeNo = FillNumber.fill(typeNo, 2);
         String sqlLanguage1 = "SELECT * FROM Types WHERE typeNo = ?";
         String[] psString1 = {typeNo};
         try {

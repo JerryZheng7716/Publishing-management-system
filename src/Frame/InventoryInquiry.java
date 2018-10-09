@@ -1,7 +1,7 @@
 package Frame;
 
 import Util.NoName;
-import Util.OtherFunction;
+import Util.ControlFunction;
 import Util.SqlFunction;
 
 import javax.swing.*;
@@ -30,7 +30,7 @@ public class InventoryInquiry extends JFrame implements Frame {
     private NoName noNameAuthor;
     private NoName noNameType;
 
-    private void initListener(){
+    private void initListener() {
         comboBox1.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -40,11 +40,11 @@ public class InventoryInquiry extends JFrame implements Frame {
                         "WHERE Books.bkNo = BookType.bkNo " +
                         "AND BookType.typeNo = ? ";
                 String[] ps = new String[]{typeNo};
-                ResultSet resultSet = SqlFunction.doSqlSelect(sqlLanguage,ps,false);
-                int typeCount=0;
-                try{
-                    while (resultSet.next()){
-                        typeCount+=resultSet.getInt(1);
+                ResultSet resultSet = SqlFunction.doSqlSelect(sqlLanguage, ps, false);
+                int typeCount = 0;
+                try {
+                    while (resultSet.next()) {
+                        typeCount += resultSet.getInt(1);
                     }
                 } catch (SQLException e1) {
                     e1.printStackTrace();
@@ -106,11 +106,11 @@ public class InventoryInquiry extends JFrame implements Frame {
                         "WHERE Books.bkNo = BookType.bkNo " +
                         "AND BookType.typeNo = ? ";
                 String[] ps = new String[]{typeNo};
-                ResultSet resultSet = SqlFunction.doSqlSelect(sqlLanguage,ps,false);
-                int typeCount=0;
-                try{
-                    while (resultSet.next()){
-                        typeCount+=resultSet.getInt(1);
+                ResultSet resultSet = SqlFunction.doSqlSelect(sqlLanguage, ps, false);
+                int typeCount = 0;
+                try {
+                    while (resultSet.next()) {
+                        typeCount += resultSet.getInt(1);
                     }
                 } catch (SQLException e1) {
                     e1.printStackTrace();
@@ -120,11 +120,11 @@ public class InventoryInquiry extends JFrame implements Frame {
                         "FROM Books " +
                         "WHERE Books.bkNo = ? ";
                 String[] ps1 = new String[]{bkNo};
-                int bkCount=0;
-                ResultSet resultSet1 = SqlFunction.doSqlSelect(sqlLanguage1,ps1,false);
-                try{
-                    while (resultSet1.next()){
-                        bkCount+=resultSet1.getInt(1);
+                int bkCount = 0;
+                ResultSet resultSet1 = SqlFunction.doSqlSelect(sqlLanguage1, ps1, false);
+                try {
+                    while (resultSet1.next()) {
+                        bkCount += resultSet1.getInt(1);
                     }
                 } catch (SQLException e1) {
                     e1.printStackTrace();
@@ -134,11 +134,11 @@ public class InventoryInquiry extends JFrame implements Frame {
                 String sqlLanguage2 = "SELECT bkPrtQty " +
                         "FROM Books";
                 String[] ps2 = new String[]{};
-                int allCount=0;
-                ResultSet resultSet2 = SqlFunction.doSqlSelect(sqlLanguage2,ps2,false);
-                try{
-                    while (resultSet2.next()){
-                        allCount+=resultSet2.getInt(1);
+                int allCount = 0;
+                ResultSet resultSet2 = SqlFunction.doSqlSelect(sqlLanguage2, ps2, false);
+                try {
+                    while (resultSet2.next()) {
+                        allCount += resultSet2.getInt(1);
                     }
                 } catch (SQLException e1) {
                     e1.printStackTrace();
@@ -152,18 +152,21 @@ public class InventoryInquiry extends JFrame implements Frame {
         });
     }
 
-    private void doSearch(){
+    /**
+     * 进行对当前的筛选字段进行筛选操作
+     */
+    private void doSearch() {
         String typeNo = noNameType.getNo(comboBox1.getSelectedItem().toString());
         String bkNo = textField1.getText();
         String bkTitle = textField2.getText();
         String auNo = noNameAuthor.getNo(comboBox2.getSelectedItem().toString());
-        if (typeNo.equals("全部")){
+        if (typeNo.equals("全部")) {
             typeNo = "";
         }
-        if (auNo.equals("全部")){
-            auNo="";
+        if (auNo.equals("全部")) {
+            auNo = "";
         }
-        initTable(typeNo, "%"+bkNo+"%", "%"+bkTitle+"%", auNo);
+        initTable(typeNo, "%" + bkNo + "%", "%" + bkTitle + "%", auNo);
     }
 
     @Override
@@ -174,8 +177,8 @@ public class InventoryInquiry extends JFrame implements Frame {
         this.pack();
         this.setLocation(300, 200);
         this.setVisible(true);
-        noNameAuthor = new NoName("auNo", "auName", "Authors",true);
-        noNameType = new NoName("typeNo", "typeTitle", "types",true);
+        noNameAuthor = new NoName("auNo", "auName", "Authors", true);
+        noNameType = new NoName("typeNo", "typeTitle", "types", true);
         initTable();
         initText();
         initListener();
@@ -189,7 +192,7 @@ public class InventoryInquiry extends JFrame implements Frame {
 
     @Override
     public void initTable() {
-        initTable("%","%","%","%");
+        initTable("%", "%", "%", "%");
     }
 
     public void initTable(String typeNo, String bkNo, String bkTitle, String auNo) {
@@ -210,7 +213,7 @@ public class InventoryInquiry extends JFrame implements Frame {
                 "AND Books.bkNo like ? " +
                 "AND Books.bkTitle like ? ";
         String[] ps = new String[]{typeNo, auNo, bkNo, bkTitle};
-        OtherFunction.setTable(sqlLanguage, ps, table1);
+        ControlFunction.setTable(sqlLanguage, ps, table1);
     }
 
     @Override

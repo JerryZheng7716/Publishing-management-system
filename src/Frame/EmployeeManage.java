@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class EmployeeManage extends JFrame implements Frame{
+public class EmployeeManage extends JFrame implements Frame {
     private JPanel panel1;
     private JTable table1;
     private JButton addButton;
@@ -35,8 +35,8 @@ public class EmployeeManage extends JFrame implements Frame{
     private JComboBox comboBox5;
     private JComboBox comboBox6;
     private String oldName = "防止重名没有作用DEFE32";
-    private DateComboBox dateComboboxBirthday = new DateComboBox(comboBox2,comboBox3,null);
-    private DateComboBox dateComboboxEntrytime = new DateComboBox(comboBox4,comboBox5,comboBox6);
+    private DateComboBox dateComboboxBirthday = new DateComboBox(comboBox2, comboBox3, null);
+    private DateComboBox dateComboboxEntrytime = new DateComboBox(comboBox4, comboBox5, comboBox6);
     private NoName noNameDept;
 
     public EmployeeManage() {
@@ -47,25 +47,25 @@ public class EmployeeManage extends JFrame implements Frame{
                 textField1.setText((String) table1.getValueAt(index, 0));
                 textField2.setText("");
                 textField3.setText((String) table1.getValueAt(index, 1));
-                if (table1.getValueAt(index, 2).equals("1")){
+                if (table1.getValueAt(index, 2).equals("1")) {
                     textField4.setText("男");
-                }else{
+                } else {
                     textField4.setText("女");
                 }
                 String[] timeStrings = ((String) table1.getValueAt(index, 3))
                         .split("-");
                 timeStrings[1] = (Integer.parseInt(timeStrings[1])) + "";//转换成int 再转 String 把前面的0去掉
                 timeStrings[2] = (Integer.parseInt(timeStrings[2])) + "";//转换成int 再转 String 把前面的0去掉
-                OtherFunction.setComboBoxSelect(comboBox2, timeStrings[0]);
-                OtherFunction.setComboBoxSelect(comboBox3, timeStrings[1]);
+                ControlFunction.setComboBoxSelect(comboBox2, timeStrings[0]);
+                ControlFunction.setComboBoxSelect(comboBox3, timeStrings[1]);
 
                 timeStrings = ((String) table1.getValueAt(index, 4))
                         .split("-");
                 timeStrings[1] = (Integer.parseInt(timeStrings[1])) + "";//转换成int 再转 String 把前面的0去掉
                 timeStrings[2] = (Integer.parseInt(timeStrings[2])) + "";//转换成int 再转 String 把前面的0去掉
-                OtherFunction.setComboBoxSelect(comboBox4, timeStrings[0]);
-                OtherFunction.setComboBoxSelect(comboBox5, timeStrings[1]);
-                OtherFunction.setComboBoxSelect(comboBox6, timeStrings[2]);
+                ControlFunction.setComboBoxSelect(comboBox4, timeStrings[0]);
+                ControlFunction.setComboBoxSelect(comboBox5, timeStrings[1]);
+                ControlFunction.setComboBoxSelect(comboBox6, timeStrings[2]);
 
                 textField7.setText((String) table1.getValueAt(index, 5));
                 textField8.setText((String) table1.getValueAt(index, 6));
@@ -73,7 +73,7 @@ public class EmployeeManage extends JFrame implements Frame{
                 textField10.setText((String) table1.getValueAt(index, 8));
                 textField11.setText((String) table1.getValueAt(index, 9));
                 textField12.setText((String) table1.getValueAt(index, 10));
-                OtherFunction.setComboBoxSelect(comboBox1, noNameDept.getName((String) table1.getValueAt(index, 11)));
+                ControlFunction.setComboBoxSelect(comboBox1, noNameDept.getName((String) table1.getValueAt(index, 11)));
                 String s = (String) table1.getValueAt(index, 11);
                 changeButton.setEnabled(true);
                 delButton.setEnabled(true);
@@ -85,7 +85,7 @@ public class EmployeeManage extends JFrame implements Frame{
             @Override
             public void mouseClicked(MouseEvent e) {
                 //添加人员
-                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(), 2)) {
                     return;
                 }
                 oldName = "防止重名没有作用DEFE32";
@@ -108,18 +108,18 @@ public class EmployeeManage extends JFrame implements Frame{
             @Override
             public void mouseClicked(MouseEvent e) {
                 //修改人员
-                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(), 2)) {
                     return;
                 }
                 String sqlLanguage = "UPDATE Employee SET empNo=?, empName=?, empSex=?, empBirthday=?, empEntrytime=?, empProvince=?, empCity=?, " +
                         "empempZip=?, empAdress=?, empTelephone=?, empEmail=?, deptNo=?, empPwd=?,empAuthority=? where empNo = ?";
                 String[] psString = new String[15];
                 String[] ps = getStrings();
-                if (ps==null){
+                if (ps == null) {
                     return;
                 }
                 System.arraycopy(ps, 0, psString, 0, 14);
-                psString[14]=oldName;
+                psString[14] = oldName;
                 if (psString[0].equals("")) {
                     return;
                 }
@@ -137,7 +137,7 @@ public class EmployeeManage extends JFrame implements Frame{
             @Override
             public void mouseClicked(MouseEvent e) {
                 //删除
-                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(), 2)) {
                     return;
                 }
                 String sqlLanguage = "DELETE Employee where empNo = ?";
@@ -145,8 +145,8 @@ public class EmployeeManage extends JFrame implements Frame{
                 if (psString[0].equals("")) {
                     return;
                 }
-                int res=JOptionPane.showConfirmDialog(null, "是否删除”"+oldName+"“的信息", "是否修改", JOptionPane.YES_NO_OPTION);
-                if(res==JOptionPane.YES_OPTION){
+                int res = JOptionPane.showConfirmDialog(null, "是否删除”" + oldName + "“的信息", "是否修改", JOptionPane.YES_NO_OPTION);
+                if (res == JOptionPane.YES_OPTION) {
                     int x = SqlFunction.doSqlUpdate(sqlLanguage, psString);
                     if (x > 0) {
 
@@ -155,7 +155,7 @@ public class EmployeeManage extends JFrame implements Frame{
                         delButton.setEnabled(false);
                         changeButton.setEnabled(false);
                     }
-                }else{
+                } else {
                     return;
                 }
                 super.mouseClicked(e);
@@ -173,7 +173,7 @@ public class EmployeeManage extends JFrame implements Frame{
         this.setVisible(true);
         initTable();
         initText();
-        noNameDept = new NoName("deptNo","deptTitle","Departments");
+        noNameDept = new NoName("deptNo", "deptTitle", "Departments");
         delButton.setEnabled(false);
         changeButton.setEnabled(false);
     }
@@ -190,13 +190,13 @@ public class EmployeeManage extends JFrame implements Frame{
         textField10.setText("");
         textField11.setText("");
         textField12.setText("");
-        String sql="SELECT deptTitle FROM Departments";
-        OtherFunction.setComboBoxItem(sql,comboBox1);
+        String sql = "SELECT deptTitle FROM Departments";
+        ControlFunction.setComboBoxItem(sql, comboBox1);
     }
 
     @Override
     public void initTable() {
-        final Object[] columnNames = {"员工编号", "员工姓名", "性别", "出生年月", "入职时间","所在省","所在城市","邮编","联系地址","联系电话","邮箱","所属部门"};
+        final Object[] columnNames = {"员工编号", "员工姓名", "性别", "出生年月", "入职时间", "所在省", "所在城市", "邮编", "联系地址", "联系电话", "邮箱", "所属部门"};
         Object[][] rowData = {};
         TableColumn column = new TableColumn();
         column.setHeaderValue(columnNames);//
@@ -204,18 +204,18 @@ public class EmployeeManage extends JFrame implements Frame{
         TableModel dataModel = new DefaultTableModel(rowData, columnNames);
         table1.setModel(dataModel);
         String sqlLanguage = "SELECT * FROM Employee";
-        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
+        ControlFunction.setTable(sqlLanguage, new String[]{}, table1);
     }
 
     @Override
     public String[] getStrings() {
         String empNo, empName, empSex, empBirthday, empEntrytime, empProvince, empCity, empZip, empAddress, empTelephone,
-                empEmail, deptNo, empPwd="c984aed014aec7623a54f0591da07a85fd4b762d",empAuthority="0000000";//密码初始值为加密的000000，权限初始值为没有任何权限
+                empEmail, deptNo, empPwd = "c984aed014aec7623a54f0591da07a85fd4b762d", empAuthority = "0000000";//密码初始值为加密的000000，权限初始值为没有任何权限
         empNo = textField1.getText();
         empName = textField3.getText();
-        empSex = textField4.getText().equals("女")? "0":"1";
-        empBirthday = comboBox2.getSelectedItem().toString()+"-"+comboBox3.getSelectedItem().toString()+"-"+"01";
-        empEntrytime = comboBox4.getSelectedItem().toString()+"-"+comboBox5.getSelectedItem().toString()+"-"+comboBox6.getSelectedItem().toString();
+        empSex = textField4.getText().equals("女") ? "0" : "1";
+        empBirthday = comboBox2.getSelectedItem().toString() + "-" + comboBox3.getSelectedItem().toString() + "-" + "01";
+        empEntrytime = comboBox4.getSelectedItem().toString() + "-" + comboBox5.getSelectedItem().toString() + "-" + comboBox6.getSelectedItem().toString();
         empProvince = textField7.getText();
         empCity = textField8.getText();
         empZip = textField9.getText();
@@ -247,14 +247,14 @@ public class EmployeeManage extends JFrame implements Frame{
         try {
             ResultSet resultSet = SqlFunction.doSqlSelect(sqlLanguage1, psString1, false);
             if (resultSet.next()) {
-                if (!empNo.equals(oldName)){
+                if (!empNo.equals(oldName)) {
                     JOptionPane.showMessageDialog(null, "已经存在当前人员编号!!");
                     oldName = empNo;
                     return null;
-                }else {
-                    empAuthority=resultSet.getString(1);
+                } else {
+                    empAuthority = resultSet.getString(1);
                     if (textField2.getText().equals("")) {//没有填写密码，切执行的是修改操作
-                        empPwd=resultSet.getString(2);
+                        empPwd = resultSet.getString(2);
                     }
                 }
             }
@@ -262,9 +262,9 @@ public class EmployeeManage extends JFrame implements Frame{
             e.printStackTrace();
         }
         if (!textField2.getText().equals("")) {//填写密码
-            empPwd=SHA1.encode(textField2.getText());
+            empPwd = SHA1.encode(textField2.getText());
         }
-        return new String[]{empNo, empName, empSex, empBirthday, empEntrytime, empProvince, empCity, empZip, empAddress, empTelephone, empEmail, deptNo, empPwd,empAuthority};
+        return new String[]{empNo, empName, empSex, empBirthday, empEntrytime, empProvince, empCity, empZip, empAddress, empTelephone, empEmail, deptNo, empPwd, empAuthority};
     }
 
 }

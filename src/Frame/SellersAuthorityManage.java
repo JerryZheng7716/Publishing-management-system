@@ -1,8 +1,7 @@
 package Frame;
 
-import Util.FillNumber;
 import Util.LoginInfo;
-import Util.OtherFunction;
+import Util.ControlFunction;
 import Util.SqlFunction;
 
 import javax.swing.*;
@@ -13,8 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
-import java.util.Objects;
 
 public class SellersAuthorityManage extends JFrame implements Frame {
     private JPanel panel1;
@@ -49,7 +46,7 @@ public class SellersAuthorityManage extends JFrame implements Frame {
         initPwdButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!LoginInfo.testAuthority(LoginInfo.getQx权限管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx权限管理(), 2)) {
                     return;
                 }
                 String sql = "UPDATE Sellers SET selPwd=? where selNo = ?";
@@ -75,7 +72,7 @@ public class SellersAuthorityManage extends JFrame implements Frame {
         TableModel dataModel = new DefaultTableModel(rowData, columnNames);
         table1.setModel(dataModel);
         String sqlLanguage = "SELECT * FROM Sellers";
-        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
+        ControlFunction.setTable(sqlLanguage, new String[]{}, table1);
     }
 
     @Override

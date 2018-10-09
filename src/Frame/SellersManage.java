@@ -41,7 +41,7 @@ public class SellersManage extends JFrame implements Frame {
                 textField2.setText((String) table1.getValueAt(index, 1));
                 textField3.setText((String) table1.getValueAt(index, 2));
                 textField4.setText((String) table1.getValueAt(index, 3));
-                OtherFunction.setComboBoxSelect(comboBox1,table1.getValueAt(index, 4).toString().trim());
+                ControlFunction.setComboBoxSelect(comboBox1, table1.getValueAt(index, 4).toString().trim());
                 textField5.setText((String) table1.getValueAt(index, 5));
                 textField6.setText((String) table1.getValueAt(index, 6));
                 textField7.setText((String) table1.getValueAt(index, 7));
@@ -58,13 +58,13 @@ public class SellersManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //添加
-                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(), 2)) {
                     return;
                 }
                 oldName = "防止重名没有作用DEFE32";
                 String sqlLanguage = "INSERT Sellers VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ";
                 String[] psString = getStrings();
-                BasicOperation.add(sqlLanguage,psString);
+                BasicOperation.add(sqlLanguage, psString);
                 delButton.setEnabled(false);
                 changeButton.setEnabled(false);
                 initTable();
@@ -74,14 +74,14 @@ public class SellersManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //修改
-                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(), 2)) {
                     return;
                 }
                 String sqlLanguage = "UPDATE Sellers SET selNo = ?, selTitle = ?, selName = ?, selTelephone = ?, selProvince = ?, " +
                         "selCity = ?, selZip = ?, selAddress = ?, selEmail = ?, selDeliAddress = ?, selRemark = ? " +
                         "where selNo = ?";
                 String[] ps = getStrings();
-                BasicOperation.change(sqlLanguage,ps,oldName);
+                BasicOperation.change(sqlLanguage, ps, oldName);
                 delButton.setEnabled(false);
                 changeButton.setEnabled(false);
                 initTable();
@@ -91,11 +91,11 @@ public class SellersManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //删除
-                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(), 2)) {
                     return;
                 }
                 String sqlLanguage = "DELETE Sellers where selNo = ?";
-                BasicOperation.del(sqlLanguage,oldName);
+                BasicOperation.del(sqlLanguage, oldName);
                 delButton.setEnabled(false);
                 changeButton.setEnabled(false);
                 initTable();
@@ -124,7 +124,7 @@ public class SellersManage extends JFrame implements Frame {
 
     @Override
     public void initTable() {
-        final Object[] columnNames = {"商家编号","商家名称","联系人姓名","联系电话","所在省","所在城市","邮编","联系地址","邮箱","送货地址","备注"};
+        final Object[] columnNames = {"商家编号", "商家名称", "联系人姓名", "联系电话", "所在省", "所在城市", "邮编", "联系地址", "邮箱", "送货地址", "备注"};
         Object[][] rowData = {};
         TableColumn column = new TableColumn();
         column.setHeaderValue(columnNames);//
@@ -133,12 +133,12 @@ public class SellersManage extends JFrame implements Frame {
         table1.setModel(dataModel);
 
         String sqlLanguage = "SELECT * FROM Sellers";
-        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
+        ControlFunction.setTable(sqlLanguage, new String[]{}, table1);
     }
 
     @Override
     public String[] getStrings() {
-        String selNo, selTitle, selName, selTelephone, selProvince, selCity, selZip, selAdress, selEmail, selDeliAdress, selRemark,selPwd;
+        String selNo, selTitle, selName, selTelephone, selProvince, selCity, selZip, selAdress, selEmail, selDeliAdress, selRemark, selPwd;
         selNo = textField1.getText();
         selTitle = textField2.getText();
         selName = textField3.getText();
@@ -150,20 +150,20 @@ public class SellersManage extends JFrame implements Frame {
         selEmail = textField8.getText();
         selDeliAdress = textField9.getText();
         selRemark = textField10.getText();
-        selPwd="c984aed014aec7623a54f0591da07a85fd4b762d";
+        selPwd = "c984aed014aec7623a54f0591da07a85fd4b762d";
         if (selNo.equals("")) {
             JOptionPane.showMessageDialog(null, "类型编号不能为空!!");
             return null;
         }
-        try{
+        try {
             if (Integer.parseInt(selNo) >= 100000) {
                 JOptionPane.showMessageDialog(null, "类型编号为5位数字");
                 return null;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "类型编号为5位数字");
         }
-        selNo=FillNumber.fill(selNo,5);
+        selNo = FillNumber.fill(selNo, 5);
         if (selTitle.equals("")) {
             JOptionPane.showMessageDialog(null, "商家名称不能为空!!");
             return null;
@@ -188,6 +188,6 @@ public class SellersManage extends JFrame implements Frame {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new String[]{selNo, selTitle, selName, selTelephone, selProvince, selCity, selZip, selAdress, selEmail, selDeliAdress, selRemark,selPwd};
+        return new String[]{selNo, selTitle, selName, selTelephone, selProvince, selCity, selZip, selAdress, selEmail, selDeliAdress, selRemark, selPwd};
     }
 }

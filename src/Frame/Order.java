@@ -251,7 +251,7 @@ public class Order extends JFrame implements Frame {
         if (LoginInfo.getDeptNo().equals("商家")) {//如果是商家登录，那么只能看到自己的订单
             sqlLanguage = "SELECT * FROM Orders WHERE selNo = " + LoginInfo.getLoginNo();
         }
-        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
+        ControlFunction.setTable(sqlLanguage, new String[]{}, table1);
     }
 
     @Override
@@ -294,6 +294,11 @@ public class Order extends JFrame implements Frame {
         }
     }
 
+    /**
+     * 自动获取订单编号，如20181009001 前8位为日期，后三位为今日的序号
+     *
+     * @return 订单编号
+     */
     private String getOrdNo() {
         String ordNo;
         Date date = new Date();

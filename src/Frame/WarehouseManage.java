@@ -2,7 +2,7 @@ package Frame;
 
 import Util.LoginInfo;
 import Util.NoName;
-import Util.OtherFunction;
+import Util.ControlFunction;
 import Util.SqlFunction;
 
 import javax.swing.*;
@@ -37,7 +37,7 @@ public class WarehouseManage extends JFrame implements Frame {
             public void mousePressed(MouseEvent e) {
                 int index = table1.getSelectedRow();
                 textField1.setText((String) table1.getValueAt(index, 0));
-                OtherFunction.setComboBoxSelect(comboBox1,noName.getName((String) table1.getValueAt(index, 1)));
+                ControlFunction.setComboBoxSelect(comboBox1, noName.getName((String) table1.getValueAt(index, 1)));
                 textField2.setText((String) table1.getValueAt(index, 2));
                 textField3.setText(((String) table1.getValueAt(index, 3)).trim());
                 textField4.setText((String) table1.getValueAt(index, 4));
@@ -52,7 +52,7 @@ public class WarehouseManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //添加仓库
-                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(), 2)) {
                     return;
                 }
                 oldName = "防止重名没有作用DEFE32";
@@ -74,18 +74,18 @@ public class WarehouseManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //修改仓库
-                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(), 2)) {
                     return;
                 }
                 String sqlLanguage = "UPDATE Warehouse SET whNo=?, empNo=?, whTelephone=?, whAddress=?, whArea=?, whRemark=?" +
                         " where whNo = ?";
                 String[] psString = new String[7];
                 String[] ps = getStrings();
-                if (ps==null){
+                if (ps == null) {
                     return;
                 }
                 System.arraycopy(ps, 0, psString, 0, 6);
-                psString[6]=oldName;
+                psString[6] = oldName;
                 if (psString[0].equals("")) {
                     return;
                 }
@@ -102,7 +102,7 @@ public class WarehouseManage extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //删除仓库
-                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(), 2)) {
                     return;
                 }
                 String sqlLanguage = "DELETE Warehouse where whNo = ?";
@@ -110,8 +110,8 @@ public class WarehouseManage extends JFrame implements Frame {
                 if (psString[0].equals("")) {
                     return;
                 }
-                int res=JOptionPane.showConfirmDialog(null, "是否删除”"+oldName+"“的信息", "是否修改", JOptionPane.YES_NO_OPTION);
-                if(res==JOptionPane.YES_OPTION){
+                int res = JOptionPane.showConfirmDialog(null, "是否删除”" + oldName + "“的信息", "是否修改", JOptionPane.YES_NO_OPTION);
+                if (res == JOptionPane.YES_OPTION) {
                     int x = SqlFunction.doSqlUpdate(sqlLanguage, psString);
                     if (x > 0) {
 
@@ -120,7 +120,7 @@ public class WarehouseManage extends JFrame implements Frame {
                         delButton.setEnabled(false);
                         changeButton.setEnabled(false);
                     }
-                }else{
+                } else {
                     return;
                 }
             }
@@ -139,18 +139,18 @@ public class WarehouseManage extends JFrame implements Frame {
         initText();
         delButton.setEnabled(false);
         changeButton.setEnabled(false);
-        noName = new NoName("empNo","empName","Employee");
+        noName = new NoName("empNo", "empName", "Employee");
     }
 
     @Override
     public void initText() {
         String sql = "SELECT empName FROM Employee";
-        OtherFunction.setComboBoxItem(sql,comboBox1);
+        ControlFunction.setComboBoxItem(sql, comboBox1);
     }
 
     @Override
     public void initTable() {
-        final Object[] columnNames = {"仓库编号","仓库负责人","联系电话","所在位置","面积","备注"};
+        final Object[] columnNames = {"仓库编号", "仓库负责人", "联系电话", "所在位置", "面积", "备注"};
         Object[][] rowData = {};
         TableColumn column = new TableColumn();
         column.setHeaderValue(columnNames);//
@@ -159,7 +159,7 @@ public class WarehouseManage extends JFrame implements Frame {
         table1.setModel(dataModel);
 
         String sqlLanguage = "SELECT * FROM Warehouse";
-        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
+        ControlFunction.setTable(sqlLanguage, new String[]{}, table1);
     }
 
     @Override
@@ -170,11 +170,11 @@ public class WarehouseManage extends JFrame implements Frame {
         whAddress = textField3.getText();
         whArea = textField4.getText();
         whRemark = textField5.getText();
-        try{
-            if (Integer.valueOf(whNo)>=100){
+        try {
+            if (Integer.valueOf(whNo) >= 100) {
                 JOptionPane.showMessageDialog(null, "仓库编号为2位数字!!");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "仓库编号必须为2位数字!!");
         }
         empNo = noName.getNo(Objects.requireNonNull(comboBox1.getSelectedItem()).toString());

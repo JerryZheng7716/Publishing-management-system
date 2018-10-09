@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class OtherFunction {
+public class ControlFunction {
 	/**
 	 * 使用数据库语言，录入table的内容
 	 * @param sqlLanguage 数据库语句
@@ -78,52 +78,6 @@ public class OtherFunction {
 		}
 	}
 
-	/**
-	 * 执行登录操作
-	 * @param AdminName 用户名
-	 * @param AdminPassWord 密码
-	 * @return 登录结果
-	 */
-	public static String Login(String AdminName,String AdminPassWord,boolean isPressModel){
-		if (StringUtil.isEmpty(AdminName) || StringUtil.isEmpty(AdminPassWord)) {
-			JOptionPane.showMessageDialog(null, "工号或密码不能为空！");
-			return "CanNotNull";
-		} else {
-			AdminPassWord=SHA1.encode(AdminPassWord);
-			String sqlLanguage;
-			if (isPressModel){
-				sqlLanguage = "SELECT * FROM Employee WHERE empNo=? and empPwd=?";
-			}else {
-				sqlLanguage = "SELECT * FROM Sellers WHERE selNo=? and selPwd=?";
-			}
-
-			String[] psString = { AdminName, AdminPassWord };
-			ResultSet resultSet=null;
-			resultSet=SqlFunction.doSqlSelect(sqlLanguage,psString,false);
-			try {
-				if (resultSet.next()) {
-					return "Success";
-				} else {
-					if (isPressModel){
-						sqlLanguage = "SELECT * FROM Employee WHERE empNo = ?";
-					}else {
-						sqlLanguage = "SELECT * FROM Sellers WHERE selNo = ?";
-					}
-					psString = new String[]{ AdminName};
-					if (SqlFunction.doSqlSelect(sqlLanguage,psString,false).next()) {
-						JOptionPane.showMessageDialog(null,"密码错误！");
-						return "passwordError";
-					}
-					JOptionPane.showMessageDialog(null,"不存在当前工号！");
-					return "NoneAccount";
-				}
-			}  catch (SQLException e) {
-				e.printStackTrace();
-			}
-			SqlFunction.closeAllLink();
-		}
-		return "Error";
-	}
 }
 
 

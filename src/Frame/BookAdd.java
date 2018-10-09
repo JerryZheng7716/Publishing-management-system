@@ -34,16 +34,17 @@ public class BookAdd extends JFrame implements Frame {
     private String oldName = "防止重名没有作用DEFE32";
     private String prtID = "防止重名没有作用DEFE32";
     private ButtonGroup buttonGroup;
-    private boolean isPrintModel=true;
+    private boolean isPrintModel = true;
     private DateComboBox dateComboBox;
-    private int oldQuantity=0;
+    private int oldQuantity = 0;
+
     BookAdd() {
         table1.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (isPrintModel){
+                if (isPrintModel) {
                     int index = table1.getSelectedRow();
-                    OtherFunction.setComboBoxSelect(comboBox2,(String) table1.getValueAt(index, 1));
+                    ControlFunction.setComboBoxSelect(comboBox2, (String) table1.getValueAt(index, 1));
                     dateComboBox.setNow();
                     textField2.setText((String) table1.getValueAt(index, 3));
                     prtID = (String) table1.getValueAt(index, 0);
@@ -56,17 +57,17 @@ public class BookAdd extends JFrame implements Frame {
             public void mousePressed(MouseEvent e) {
                 int index = table2.getSelectedRow();
                 textField1.setText((String) table2.getValueAt(index, 0));
-                OtherFunction.setComboBoxSelect(comboBox1,(String) table2.getValueAt(index, 1));
-                OtherFunction.setComboBoxSelect(comboBox2,(String) table2.getValueAt(index, 2));
+                ControlFunction.setComboBoxSelect(comboBox1, (String) table2.getValueAt(index, 1));
+                ControlFunction.setComboBoxSelect(comboBox2, (String) table2.getValueAt(index, 2));
                 dateComboBox.setSelect((String) table2.getValueAt(index, 4));
                 textField2.setText((String) table2.getValueAt(index, 5));
                 textField3.setText((String) table2.getValueAt(index, 6));
                 textField4.setText((String) table2.getValueAt(index, 7));
-                if (!isPrintModel){
+                if (!isPrintModel) {
                     delButton.setEnabled(true);
                     changeButton.setEnabled(true);
                 }
-                oldQuantity= (int) table2.getValueAt(index, 5);
+                oldQuantity = Integer.parseInt(((String) table2.getValueAt(index, 5)).trim());
                 oldName = textField1.getText();
                 super.mousePressed(e);
             }
@@ -75,7 +76,7 @@ public class BookAdd extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //添加
-                if (!LoginInfo.testAuthority(LoginInfo.getQx图书印刷(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx图书印刷(), 2)) {
                     return;
                 }
                 oldName = "防止重名没有作用DEFE32";
@@ -83,26 +84,26 @@ public class BookAdd extends JFrame implements Frame {
                 String[] psString = getStrings();
                 String bkNo = psString[1];
                 int ioQuantity = Integer.parseInt(psString[4]);
-                if(BasicOperation.add(sqlLanguage,psString)){
-                    if (isPrintModel){//如果是从印刷入库，那么将印刷置为已入库状态
+                if (BasicOperation.add(sqlLanguage, psString)) {
+                    if (isPrintModel) {//如果是从印刷入库，那么将印刷置为已入库状态
                         sqlLanguage = "UPDATE PubPrint SET prtState = '1' where prtID = ?";
                         psString = new String[]{prtID};
-                        SqlFunction.doSqlUpdate(sqlLanguage,psString);
+                        SqlFunction.doSqlUpdate(sqlLanguage, psString);
                     }
-                    int bkPrtQty=0;
+                    int bkPrtQty = 0;
                     sqlLanguage = "SELECT bkPrtQty FROM Books WHERE bkNo = ?";
                     psString = new String[]{bkNo};
-                    ResultSet resultSet = SqlFunction.doSqlSelect(sqlLanguage,psString,false);
+                    ResultSet resultSet = SqlFunction.doSqlSelect(sqlLanguage, psString, false);
                     try {
                         resultSet.next();
-                        bkPrtQty=resultSet.getInt(1);
+                        bkPrtQty = resultSet.getInt(1);
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
 
                     sqlLanguage = "UPDATE Books SET bkPrtQty = ? where bkNo = ?";
-                    psString = new String[]{bkPrtQty+ioQuantity+"",bkNo};
-                    SqlFunction.doSqlUpdate(sqlLanguage,psString);
+                    psString = new String[]{bkPrtQty + ioQuantity + "", bkNo};
+                    SqlFunction.doSqlUpdate(sqlLanguage, psString);
                 }
 
                 delButton.setEnabled(false);
@@ -114,28 +115,28 @@ public class BookAdd extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //修改
-                if (!LoginInfo.testAuthority(LoginInfo.getQx图书印刷(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx图书印刷(), 2)) {
                     return;
                 }
                 String sqlLanguage = "UPDATE InoutWH SET whNo = ?, bkNo = ?, ioType = ?, ioTime = ?, ioQuantity = ?, empNo = ?, prtRemark = ? " +
                         "where ioId = ?";
                 String[] ps = getStrings();
-                if(BasicOperation.change(sqlLanguage,ps,oldName)){
-                    int bkPrtQty=0;
+                if (BasicOperation.change(sqlLanguage, ps, oldName)) {
+                    int bkPrtQty = 0;
                     int ioQuantity = Integer.parseInt(ps[4]);
                     sqlLanguage = "SELECT bkPrtQty FROM Books WHERE bkNo = ?";
                     String[] psString = new String[]{ps[1]};
-                    ResultSet resultSet = SqlFunction.doSqlSelect(sqlLanguage,psString,false);
+                    ResultSet resultSet = SqlFunction.doSqlSelect(sqlLanguage, psString, false);
                     try {
                         resultSet.next();
-                        bkPrtQty=resultSet.getInt(1);
+                        bkPrtQty = resultSet.getInt(1);
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
 
                     sqlLanguage = "UPDATE Books SET bkPrtQty = ? where bkNo = ?";
-                    psString = new String[]{bkPrtQty+ioQuantity-oldQuantity+"",ps[1]};//修改库存变化
-                    SqlFunction.doSqlUpdate(sqlLanguage,psString);
+                    psString = new String[]{bkPrtQty + ioQuantity - oldQuantity + "", ps[1]};//修改库存变化
+                    SqlFunction.doSqlUpdate(sqlLanguage, psString);
                 }
                 delButton.setEnabled(false);
                 changeButton.setEnabled(false);
@@ -146,25 +147,25 @@ public class BookAdd extends JFrame implements Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //删除
-                if (!LoginInfo.testAuthority(LoginInfo.getQx图书印刷(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx图书印刷(), 2)) {
                     return;
                 }
                 String sqlLanguage = "DELETE InoutWH where ioId = ?";
-                if(BasicOperation.del(sqlLanguage,oldName)){
-                    int bkPrtQty=0;
+                if (BasicOperation.del(sqlLanguage, oldName)) {
+                    int bkPrtQty = 0;
                     sqlLanguage = "SELECT bkPrtQty FROM Books WHERE bkNo = ?";
                     String[] psString = new String[]{(String) comboBox2.getSelectedItem()};
-                    ResultSet resultSet = SqlFunction.doSqlSelect(sqlLanguage,psString,false);
+                    ResultSet resultSet = SqlFunction.doSqlSelect(sqlLanguage, psString, false);
                     try {
                         resultSet.next();
-                        bkPrtQty=resultSet.getInt(1);
+                        bkPrtQty = resultSet.getInt(1);
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
 
                     sqlLanguage = "UPDATE Books SET bkPrtQty = ? where bkNo = ?";
-                    psString = new String[]{bkPrtQty-oldQuantity+"",(String) comboBox2.getSelectedItem()};//修改库存变化
-                    SqlFunction.doSqlUpdate(sqlLanguage,psString);
+                    psString = new String[]{bkPrtQty - oldQuantity + "", (String) comboBox2.getSelectedItem()};//修改库存变化
+                    SqlFunction.doSqlUpdate(sqlLanguage, psString);
                 }
                 delButton.setEnabled(false);
                 changeButton.setEnabled(false);
@@ -184,9 +185,10 @@ public class BookAdd extends JFrame implements Frame {
             }
         });
     }
-    private void setModel(){
-        if (printRadioButton.isSelected()){
-            isPrintModel=true;
+
+    private void setModel() {
+        if (printRadioButton.isSelected()) {
+            isPrintModel = true;
             comboBox2.setEnabled(false);
             comboBox3.setEnabled(false);
             comboBox4.setEnabled(false);
@@ -194,8 +196,8 @@ public class BookAdd extends JFrame implements Frame {
             textField2.setEnabled(false);
             changeButton.setEnabled(false);
             delButton.setEnabled(false);
-        }else {
-            isPrintModel=false;
+        } else {
+            isPrintModel = false;
             comboBox2.setEnabled(true);
             comboBox3.setEnabled(true);
             comboBox4.setEnabled(true);
@@ -216,7 +218,7 @@ public class BookAdd extends JFrame implements Frame {
         this.setVisible(true);
         initTable();
         initText();
-        buttonGroup=new ButtonGroup();
+        buttonGroup = new ButtonGroup();
         buttonGroup.add(printRadioButton);
         buttonGroup.add(mFRadioButton);
         printRadioButton.setSelected(true);
@@ -228,19 +230,19 @@ public class BookAdd extends JFrame implements Frame {
     @Override
     public void initText() {
         String sql = "SELECT whNo FROM Warehouse";
-        OtherFunction.setComboBoxItem(sql,comboBox1);
+        ControlFunction.setComboBoxItem(sql, comboBox1);
         sql = "SELECT bkNo FROM Books";
-        OtherFunction.setComboBoxItem(sql,comboBox2);
+        ControlFunction.setComboBoxItem(sql, comboBox2);
         textField1.setText("自动生成，无需填写");
         textField3.setText("自动生成，无需填写");
-        dateComboBox = new DateComboBox(comboBox3,comboBox4,comboBox5);
+        dateComboBox = new DateComboBox(comboBox3, comboBox4, comboBox5);
         dateComboBox.setNow();
     }
 
 
     @Override
     public void initTable() {
-        final Object[] columnNames = {"流水号","图书编号","送印时间","印刷数量","印刷版次","审核人编号","备注","印刷状态"};
+        final Object[] columnNames = {"流水号", "图书编号", "送印时间", "印刷数量", "印刷版次", "审核人编号", "备注", "印刷状态"};
         Object[][] rowData = {};
         TableColumn column = new TableColumn();
         column.setHeaderValue(columnNames);//
@@ -248,9 +250,9 @@ public class BookAdd extends JFrame implements Frame {
         TableModel dataModel = new DefaultTableModel(rowData, columnNames);
         table1.setModel(dataModel);
         String sqlLanguage = "SELECT * FROM PubPrint WHERE empNo IS NOT NULL AND prtState='0'";
-        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
+        ControlFunction.setTable(sqlLanguage, new String[]{}, table1);
 
-        final Object[] columnNames1 = {"流水号","仓库编号","图书编号","类型","时间","数量","经办人编号","备注"};
+        final Object[] columnNames1 = {"流水号", "仓库编号", "图书编号", "类型", "时间", "数量", "经办人编号", "备注"};
         Object[][] rowData1 = {};
         TableColumn column1 = new TableColumn();
         column.setHeaderValue(columnNames1);//
@@ -258,19 +260,19 @@ public class BookAdd extends JFrame implements Frame {
         TableModel dataModel1 = new DefaultTableModel(rowData1, columnNames1);
         table2.setModel(dataModel1);
         String sqlLanguage1 = "SELECT * FROM InoutWH WHERE ioType ='1'";
-        OtherFunction.setTable(sqlLanguage1, new String[]{}, table2);
+        ControlFunction.setTable(sqlLanguage1, new String[]{}, table2);
     }
 
     @Override
     public String[] getStrings() {
         String whNo, bkNo, ioType, ioTime, ioQuantity, empNo, prtRemark;
-        whNo=comboBox1.getSelectedItem().toString();
-        bkNo=comboBox2.getSelectedItem().toString();
-        ioType="1";
-        ioTime=dateComboBox.getDate();
-        ioQuantity=textField2.getText();
-        empNo=LoginInfo.getLoginNo();
-        prtRemark=textField4.getText();
+        whNo = comboBox1.getSelectedItem().toString();
+        bkNo = comboBox2.getSelectedItem().toString();
+        ioType = "1";
+        ioTime = dateComboBox.getDate();
+        ioQuantity = textField2.getText();
+        empNo = LoginInfo.getLoginNo();
+        prtRemark = textField4.getText();
         if (ioQuantity.equals("")) {
             JOptionPane.showMessageDialog(null, "入库数量不能为空!!");
             return null;

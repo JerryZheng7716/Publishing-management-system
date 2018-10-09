@@ -1,7 +1,7 @@
 package Frame;
 
 import Util.LoginInfo;
-import Util.OtherFunction;
+import Util.ControlFunction;
 import Util.SqlFunction;
 
 import javax.swing.*;
@@ -45,56 +45,60 @@ public class Ship extends JFrame implements Frame {
                 textField9.setText((String) table1.getValueAt(index, 8));
                 delButton.setEnabled(true);
                 addButton.setEnabled(true);
-                ordNo=(String) table1.getValueAt(index, 0);
+                ordNo = (String) table1.getValueAt(index, 0);
 
                 String sql = "SELECT bkNo,odQuantity FROM OrderDetails WHERE ordNo = ?";
                 String[] ps = new String[]{ordNo};
-                ResultSet resultSet = SqlFunction.doSqlSelect(sql,ps,false);
+                ResultSet resultSet = SqlFunction.doSqlSelect(sql, ps, false);
                 String bookDetails = "";
                 int count = 0;
-                try{
-                    while (resultSet.next()){
-                        if (count%2==0 && count!=0){
-                            bookDetails = bookDetails+"\n";
+                try {
+                    while (resultSet.next()) {
+                        if (count % 2 == 0 && count != 0) {
+                            bookDetails = bookDetails + "\n";
                         }
-                        bookDetails = bookDetails+"图书编号："+resultSet.getString(1)+"; ";
-                        bookDetails = bookDetails+"订购数量："+resultSet.getString(2)+"; ";
+                        bookDetails = bookDetails + "图书编号：" + resultSet.getString(1) + "; ";
+                        bookDetails = bookDetails + "订购数量：" + resultSet.getString(2) + ";    |   ";
                         count++;
                     }
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
                 textPane1.setText(bookDetails);
+                delButton.setEnabled(true);
+                addButton.setEnabled(true);
                 super.mousePressed(e);
             }
         });
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!LoginInfo.testAuthority(LoginInfo.getQx图书销售管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx图书销售管理(), 2)) {
                     return;
                 }
                 int res = JOptionPane.showConfirmDialog(null, "请核对销售单和出库单，核对信息是否确认无误", "是否确认无误", JOptionPane.YES_NO_OPTION);
                 if (res == JOptionPane.YES_OPTION) {
                     String sql = "UPDATE Orders SET ordState ='2' WHERE ordNo=?";
                     String[] ps = new String[]{ordNo};
-                    SqlFunction.doSqlUpdate(sql,ps);
+                    SqlFunction.doSqlUpdate(sql, ps);
                     JOptionPane.showMessageDialog(null, "发货成功");
+                    initTable();
                 }
             }
         });
         delButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!LoginInfo.testAuthority(LoginInfo.getQx图书销售管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx图书销售管理(), 2)) {
                     return;
                 }
                 int res = JOptionPane.showConfirmDialog(null, "是否确认取消发货？", "确定取消发货", JOptionPane.YES_NO_OPTION);
                 if (res == JOptionPane.YES_OPTION) {
                     String sql = "UPDATE Orders SET ordState ='1' WHERE ordNo=?";
                     String[] ps = new String[]{ordNo};
-                    SqlFunction.doSqlUpdate(sql,ps);
+                    SqlFunction.doSqlUpdate(sql, ps);
                     JOptionPane.showMessageDialog(null, "取消成功");
+                    initTable();
                 }
             }
         });
@@ -128,7 +132,7 @@ public class Ship extends JFrame implements Frame {
         TableModel dataModel = new DefaultTableModel(rowData, columnNames);
         table1.setModel(dataModel);
         String sqlLanguage = "SELECT * FROM Orders WHERE ordState ='1' OR ordState ='2'";
-        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
+        ControlFunction.setTable(sqlLanguage, new String[]{}, table1);
     }
 
     @Override

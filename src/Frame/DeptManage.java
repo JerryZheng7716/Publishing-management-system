@@ -1,7 +1,7 @@
 package Frame;
 
 import Util.LoginInfo;
-import Util.OtherFunction;
+import Util.ControlFunction;
 import Util.SqlFunction;
 
 import javax.swing.*;
@@ -51,7 +51,7 @@ public class DeptManage extends JFrame implements Frame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //添加部门
-                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(), 2)) {
                     return;
                 }
                 oldName = "防止重名没有作用DEFE32";
@@ -74,17 +74,17 @@ public class DeptManage extends JFrame implements Frame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //修改部门
-                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(), 2)) {
                     return;
                 }
                 String sqlLanguage = "UPDATE Departments SET deptNO = ?,deptTitle = ?,deptManager = ?, deptTelephone = ? ,deptAddress = ? where deptNO = ?";
                 String[] psString = new String[6];
                 String[] ps = getStrings();
-                if (ps==null){
+                if (ps == null) {
                     return;
                 }
                 System.arraycopy(ps, 0, psString, 0, 5);
-                psString[5]=oldName;
+                psString[5] = oldName;
                 if (psString[0].equals("")) {
                     return;
                 }
@@ -102,7 +102,7 @@ public class DeptManage extends JFrame implements Frame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //删除
-                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(),2)){
+                if (!LoginInfo.testAuthority(LoginInfo.getQx基本信息管理(), 2)) {
                     return;
                 }
                 String sqlLanguage = "DELETE Departments where deptNO = ?";
@@ -110,8 +110,8 @@ public class DeptManage extends JFrame implements Frame {
                 if (psString[0].equals("")) {
                     return;
                 }
-                int res=JOptionPane.showConfirmDialog(null, "是否删除”"+oldName+"“的信息", "是否修改", JOptionPane.YES_NO_OPTION);
-                if(res==JOptionPane.YES_OPTION){
+                int res = JOptionPane.showConfirmDialog(null, "是否删除”" + oldName + "“的信息", "是否修改", JOptionPane.YES_NO_OPTION);
+                if (res == JOptionPane.YES_OPTION) {
                     int x = SqlFunction.doSqlUpdate(sqlLanguage, psString);
                     if (x > 0) {
 
@@ -120,7 +120,7 @@ public class DeptManage extends JFrame implements Frame {
                         delButton1.setEnabled(false);
                         changeButton.setEnabled(false);
                     }
-                }else{
+                } else {
                     return;
                 }
                 super.mouseClicked(e);
@@ -153,7 +153,7 @@ public class DeptManage extends JFrame implements Frame {
         table1.setModel(dataModel);
 
         String sqlLanguage = "SELECT * FROM Departments";
-        OtherFunction.setTable(sqlLanguage, new String[]{}, table1);
+        ControlFunction.setTable(sqlLanguage, new String[]{}, table1);
     }
 
     @Override
@@ -178,12 +178,12 @@ public class DeptManage extends JFrame implements Frame {
             JOptionPane.showMessageDialog(null, "部门编号不能为空!!");
             return null;
         }
-        try{
+        try {
             if (Integer.parseInt(deptNO) >= 100) {
                 JOptionPane.showMessageDialog(null, "部门编号为2位数字");
                 return null;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "部门编号为2位数字");
         }
         if (deptTitle.equals("")) {
@@ -214,6 +214,6 @@ public class DeptManage extends JFrame implements Frame {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new String[]{deptNO, deptTitle, deptManager, deptTelephone,deptAddress};
+        return new String[]{deptNO, deptTitle, deptManager, deptTelephone, deptAddress};
     }
 }
